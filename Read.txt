@@ -1,3 +1,4 @@
 1. BootStrap: adding bootstrap in index.hbs
 2. Nav bar 
-
+3. Products added
+4. Setting layout and partials
