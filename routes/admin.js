@@ -26,5 +26,8 @@ router.get('/', function(req, res, next) {
   }]
  res.render("admin/view-products",{admin:true, products})
 });
+router.get('view-products',function(req,res,){
+  res.render("admin/add-product",{admin:true})
+})
 
 module.exports = router;
