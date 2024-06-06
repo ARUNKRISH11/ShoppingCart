@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
     image:"https://www.apple.com/newsroom/images/product/iphone/standard/Apple-iPhone-14-Pro-iPhone-14-Pro-Max-hero-220907.jpg.og.jpg?202405161729"
   }]
 
-  res.render('index', { products, admin:true });
+  res.render('index', { products, admin:false });
 });
 
 module.exports = router;
