@@ -3,7 +3,7 @@ var router = express.Router();
 
 /* Admin Centre */
 router.get('/', function(req, res, next) {
- res.render("index")
+ res.render("index",{admin:true})
 });
 
 module.exports = router;
