@@ -45,35 +45,25 @@
             </div>
         </nav>
     </header>
-    <section>
+        <section>
+        <!-- Products -->
         <div class="container mt-4">
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://images.macrumors.com/t/SuHt0iQuSjaO-ExOZzJieONGf_I=/2500x/article-new/2023/09/iPhone-15-Pro-Lineup-Feature.jpg"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
-                    </div> 
-                </div>
-            </div>
-            <div class="col-md-4">
-                <div class="card" style="width: 18rem;">
-                    <img src="https://images.macrumors.com/t/SuHt0iQuSjaO-ExOZzJieONGf_I=/2500x/article-new/2023/09/iPhone-15-Pro-Lineup-Feature.jpg"
-                        class="card-img-top" alt="...">
-                    <div class="card-body">
-                        <h5 class="card-title">Card title</h5>
-                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of
-                            the
-                            card's content.</p>
-                        <a href="#" class="btn btn-primary">Go somewhere</a>
+            <div class="row">
+                {{#each products}}
+
+                <div class="col-md-4">
+                    <div class="card" style="width: 18rem;">
+                        <img src={{this.image}}
+                            class="card-img-top" alt="...">
+                        <div class="card-body">
+                            <h5 class="card-title">{{this.name}}</h5>
+                            <p class="card-text">{{this.description}}</p>
+                            <a href="#" class="btn btn-primary">Add to Cart</a>
+                        </div>
                     </div>
                 </div>
+                {{/each}}
             </div>
-            
         </div>
     </section>
     <!-- Optional JavaScript; choose one of the two! -->
