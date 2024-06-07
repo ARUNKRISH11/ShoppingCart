@@ -1,4 +1,12 @@
-1. BootStrap: adding bootstrap in index.hbs
-2. Nav bar 
-3. Products added
-4. Setting layout and partials
+SHOPPING CART PROCCESS
+
+Express or hbs generator
+BootStrap templete
+Nav bar 
+Products added
+Setting layout and partials
+Route setting for admin and user
+User navbar
+Admin navbar
+Admin page
+Products add form 
