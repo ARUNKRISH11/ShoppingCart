@@ -1,4 +1,5 @@
 var express = require('express');
+const fileupload = require('fileupload');
 var router = express.Router();
 
 /* Admin Centre */
@@ -28,6 +29,9 @@ router.get('/', (req, res, next)=>{
 });
 router.get('/add-product',(req,res)=>{
   res.render("admin/add-product",{admin:true})
+})
+router.post('/add-product',fileupload,(req,res)=>{
+  console.log(req.body)
 })
 
 module.exports = router;
