@@ -31,10 +31,10 @@ router.get('/add-product', (req, res) => {
   res.render("admin/add-product", { admin: true })
   console.log("get product")
 })
-router.post('/add-product', (req, res) => {
-  const data = req.body
-  console.log(data)
+router.post('/admin/add-product', (req, res) => {
+  console.log(req.body)
   console.log("post product")
+  res.send("OK")
 })
 
 module.exports = router;
