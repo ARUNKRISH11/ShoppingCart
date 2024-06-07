@@ -1,21 +1,37 @@
 <section>
     <div class="container">
-        <div class="row">
-            <form>
-                <label for="firstname">Name </label>
-                <input type="text" name="name" required>
-                <br>
-                <label for="lastname">Category</label>
-                <input type="text" name="category" required>
-                <br>
-                <label for="email">Description</label>
-                <input type="email" name="description" required>
-                <br>
-                <label for="password">Image</label>
-                <input type="password" name="image" required>
-                <br>
+        <div class="row ">
+            <div class="mt-4">
+                <h4>Add Product</h4>
+            </div>
+            <form action="/admin/add-product" method="post" enctype="multipart/form-data">
+                <div class="mt-3 ">
+                    <label for="name">Name </label><br>
+                    <input type="text" name="name" required>
+                    <br>
+                </div>
+                <div class="mt-3">
+                    <label for="category">Category</label><br>
+                    <input type="text" name="category" required>
+                    <br>
+                </div>
+                <div class="mt-3">
+                    <label for="price">Price</label><br>
+                    <input type="text" name="price" required>
+                    <br>
+                </div>                <div class="mt-3">
+                    <label for="description">Description</label><br>
+                    <input type="text" name="description" required>
+                    <br>
+                </div>
+                <div class="mt-3">
+                    <label for="image">Image</label><br>
+                    <input class="postion-center" type="file" name="image" required>
+                    <br>
+                </div>
+                <div class="mt-3">
                 <button type="button" class="btn btn-success">Submit</button>
-
+                </div>
             </form>
         </div>
     </div>

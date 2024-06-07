@@ -2,7 +2,7 @@ var express = require('express');
 var router = express.Router();
 
 /* Admin Centre */
-router.get('/', function(req, res, next) {
+router.get('/', (req, res, next)=>{
   let products=[{
     name:"iPhone 15 Pro",
     category:"smart-phone",
@@ -26,7 +26,7 @@ router.get('/', function(req, res, next) {
   }]
  res.render("admin/view-products",{admin:true, products})
 });
-router.get('view-products',function(req,res,){
+router.get('/add-product',(req,res)=>{
   res.render("admin/add-product",{admin:true})
 })
 
