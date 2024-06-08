@@ -10,10 +10,8 @@ module.exports.connect=function(done){ //you can use the function connect by usi
     mongoClient.connect(url,(err,data)=>{
         if(err) return done(err)
         state.db=data.db(dbname)
+        done()
     })
-
-    done()
-
 }
 
 module.exports.get=function(){
