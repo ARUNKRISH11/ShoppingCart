@@ -4,7 +4,7 @@ const state={
 }
 
 module.exports.connect=function(done){ //you can use the function connect by using requiring connection.js
-    const url='mongodb://localhost:27017'
+    const url = 'mongodb://localhost:27017';
     const dbname='shopping'
 
     mongoClient.connect(url,(err,data)=>{
