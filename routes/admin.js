@@ -34,7 +34,6 @@ router.get('/add-product', (req, res) => {
 router.post('/admin/add-product', (req, res) => {
   console.log(req.body)
   console.log("post product")
-  res.send("OK")
 })
 
 module.exports = router;
