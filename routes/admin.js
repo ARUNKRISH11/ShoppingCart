@@ -27,14 +27,14 @@ router.get('/', (req, res) => {
   }]
   res.render("admin/view-products", { admin: true, products })
 });
-router.get('/add-product', (req, res) => {
+router.get('/add-product', (req, res, next) => {
   res.render("admin/add-product", { admin: true })
   console.log("get product")
 })
 router.post('/add-product-post', (req, res, next) => {
   console.log(req.body)
   console.log("post product")
-  console.send("Your product will be add soon...")
+  res.send("Your product will be add soon...")
 })
 
 module.exports = router;
