@@ -31,9 +31,10 @@ router.get('/add-product', (req, res) => {
   res.render("admin/add-product", { admin: true })
   console.log("get product")
 })
-router.post('/admin/add-product', (req, res) => {
+router.post('/add-product-post', (req, res, next) => {
   console.log(req.body)
   console.log("post product")
+  console.send("Your product will be add soon...")
 })
 
 module.exports = router;
