@@ -23,6 +23,7 @@ try {
 await client.connect();
 
 // Send a ping to confirm a successful connection
+// client same as data
 await client.db("admin").command({ ping: 1 });
 state.db=client.db(dbname)
     done()
