@@ -33,6 +33,7 @@ router.get('/add-product', (req, res, next) => {
 })
 router.post('/add-product-post', (req, res, next) => {
   console.log(req.body)
+  console.log(req.files.image)
   console.log("post product")
   res.send("Your product will be add soon...")
 })
