@@ -39,5 +39,6 @@ run().catch(console.dir);
 }
 
 module.exports.get=function(){
+    //you will get DB while calling get()
     return state.db
 }
