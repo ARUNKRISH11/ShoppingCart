@@ -19,8 +19,8 @@ module.exports={
     addProduct:(product,callback)=>{
         console.log(product)
         async function productDB(product){
-            await client.db('product').collection('phone').insertOne(product)
-            callback(true)
+            await client.db('shopping').collection('product').insertOne(product)
+            //callback(true)
         }
         productDB(product)          
           //db.collection('product').insertOne(product).then((data)=>{
