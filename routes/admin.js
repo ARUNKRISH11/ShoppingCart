@@ -41,8 +41,7 @@ router.post('/add-product-post', (req, res, next) => {
 
   productHelpers.addProduct(req.body,(result)={
     //what happen if product added
-    //res.render("admin/add-product-post", { admin: true })
-
+    //let image=req.files.image
   })
 })
 

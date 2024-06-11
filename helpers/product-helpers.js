@@ -14,17 +14,21 @@ const client = new MongoClient(uri,  {
 }
 );
 
-module.exports={
+module.exports = {
     //function addProduct with argument product
-    addProduct:(product,callback)=>{
-        console.log(product)
-        async function productDB(product){
-            await client.db('shopping').collection('product').insertOne(product)
-            //callback(true)
+    addProduct: (productDetailes, callback) => {
+        console.log(productDetailes)
+
+        async function productDB(product) {
+            //dbName and collectionName
+            const dbName = 'shopping'
+            const collectionName = 'product'
+            await client.db(dbName).collection(collectionName).insertOne(product).then((data)=>{
+                const objectId =(data.insertedId).toString()
+                console.log(objectId)
+                //callback(objectId)
+            })
         }
-        productDB(product)          
-          //db.collection('product').insertOne(product).then((data)=>{
-            //callback(true)
-        //})
+        productDB(productDetailes)
     }
 }
