@@ -1,6 +1,8 @@
 var express = require('express');
 const fileupload = require('fileupload');
 var router = express.Router();
+//accessing product helprs
+var productHelpers = require('../helpers/product-helpers');
 
 /* Admin Centre */
 router.get('/', (req, res) => {
@@ -35,7 +37,13 @@ router.post('/add-product-post', (req, res, next) => {
   console.log(req.body)
   console.log(req.files.image)
   console.log("post product")
-  res.send("Your product will be add soon...")
+  res.send("Product will be add soon...")
+
+  productHelpers.addProduct(req.body,(result)={
+    //what happen if product added
+    //res.render("admin/add-product-post", { admin: true })
+
+  })
 })
 
 module.exports = router;
