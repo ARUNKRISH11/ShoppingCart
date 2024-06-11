@@ -39,9 +39,16 @@ router.post('/add-product-post', (req, res, next) => {
   console.log("post product")
   res.send("Product will be add soon...")
 
-  productHelpers.addProduct(req.body,(result)={
+  productHelpers.addProduct(req.body,(id)=>{
     //what happen if product added
-    //let image=req.files.image
+    let image=req.files.image
+    image.mv('./public/product-images/'+id+'.jpg',(err,done)=>{
+      if(!err){
+        res.render("admin/add-product", { admin: true })
+      }else{
+        console.log(err)
+      }
+    })
   })
 })
 

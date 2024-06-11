@@ -24,9 +24,10 @@ module.exports = {
             const dbName = 'shopping'
             const collectionName = 'product'
             await client.db(dbName).collection(collectionName).insertOne(product).then((data)=>{
+                //accessing Object id
                 const objectId =(data.insertedId).toString()
                 console.log(objectId)
-                //callback(objectId)
+                callback(objectId)
             })
         }
         productDB(productDetailes)
