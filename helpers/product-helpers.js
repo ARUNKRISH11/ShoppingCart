@@ -21,13 +21,13 @@ const client = new MongoClient(uri, {
 module.exports = {
     //function addProduct with argument product
     addProduct: (productDetailes, callback) => {
-        console.log(productDetailes)
+        //console.log(productDetailes)
 
         async function productDB(product) {
             await client.db(dbName).collection(collectionName).insertOne(product).then((data) => {
                 //accessing Object id and return
                 const objectId = (data.insertedId).toString()
-                console.log("Id from product helpers", objectId)
+                //console.log("Id from product helpers", objectId)
                 callback(objectId)
             })
         }
