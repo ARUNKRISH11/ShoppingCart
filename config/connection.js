@@ -1,5 +1,6 @@
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const state={
+    //state contain db object
     db:null
 }
 

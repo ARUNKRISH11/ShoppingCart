@@ -37,16 +37,17 @@ router.post('/add-product-post', (req, res, next) => {
   console.log(req.body)
   console.log(req.files.image)
   console.log("post product")
-  res.send("Product will be add soon...")
 
   productHelpers.addProduct(req.body,(id)=>{
+    console.log("Id from admin ",id)
     //what happen if product added
-    let image=req.files.image
-    image.mv('./public/product-images/'+id+'.jpg',(err,done)=>{
+    let Image=req.files.image //'image' should match with name in the form
+    Image.mv('./public/product-images/'+id+'.jpg',(err)=>{
       if(!err){
-        res.render("admin/add-product", { admin: true })
+        //render page or send message
+        res.send("Product will be add soon...")
       }else{
-        console.log(err)
+        console.log("Image saving error",err)
       }
     })
   })
