@@ -12,5 +12,17 @@ router.get('/', function (req, res, next) {
 
   })
 });
+router.get('/login',(req, res, next)=>{
+  res.render("user/login")
+})
+router.post('/user/login',(req, res, next)=>{
+  res.send("Log in successful...")
+})
+router.get('/signup',(req, res, next)=>{
+  res.render("user/signup")
+})
+router.post('/user/signup',(req, res, next)=>{
+  res.send("Sign up successful...")
+})
 
 module.exports = router;
