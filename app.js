@@ -9,7 +9,8 @@ var adminRouter = require('./routes/admin');
 var fileUpload = require('express-fileupload');
 const { log } = require('console');
 var app = express();
-var db=require('./config/connection')
+var db = require('./config/connection')
+var session = require('express-session')
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
@@ -21,9 +22,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
+//Session creation and time limit
+app.use(session({ secret: "Key", cookie: { maxAge: 6000000 } }))
 //DB Object created for connection
-db.connect((err)=>{
-  if(err) console.log("Connection Error"+err)
+db.connect((err) => {
+  if (err) console.log("Connection Error" + err)
   else console.log("Database Connected to port 27017")
 })
 app.use('/', userRouter);
