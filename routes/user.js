@@ -18,14 +18,14 @@ router.get('/login', (req, res, next) => {
 })
 router.post('/user/login', (req, res, next) => {
   userHelpers.doLogin(req.body).then((response)=>{
-    if (response.staus) {
+    console.log(response.staus)
+    if (response.status) {
       //the page already mentioned above. So there using redirect
       res.redirect('/')
     }else{
-      res.redirect('/user/login')
+      res.redirect('/login')
     }
   })
-  res.send("Log in successful...")
 })
 router.get('/signup', (req, res, next) => {
   res.render("user/signup")
@@ -33,7 +33,7 @@ router.get('/signup', (req, res, next) => {
 router.post('/user/signup', (req, res, next) => {
   userHelpers.doSignup(req.body).then((response) => {
     console.log(response)
-    res.send("Sign up successful...")
+    res.redirect('/')
   })
 })
 

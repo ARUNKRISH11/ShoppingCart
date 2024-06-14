@@ -28,7 +28,7 @@ module.exports = {
             let loginStatus = false
             let response = {}
             //matching email
-            let user = await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({ email: userData.email })
+            let user = await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({ email:userData.email })
             if (user) {
                 //matching password 
                 bcrypt.compare(userData.password, user.password).then((status) => {
