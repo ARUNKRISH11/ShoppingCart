@@ -23,7 +23,7 @@ app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 //Session creation and time limit
-app.use(session({ secret: "Key", cookie: { maxAge: 3600000 } }))
+app.use(session({ secret: "Key", cookie: { maxAge: 360000000 } }))
 //DB Object created for connection
 db.connect((err) => {
   if (err) console.log("Connection Error" + err)
