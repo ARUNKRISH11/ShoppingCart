@@ -18,7 +18,7 @@ router.get('/add-product', (req, res, next) => {
   res.render("admin/add-product", { admin: true })
   //console.log("get product")
 })
-router.post('/add-product-post', (req, res, next) => {
+router.post('/add-product', (req, res, next) => {
   //console.log(req.body)
   //console.log(req.files.image)
   //console.log("post product")
@@ -35,6 +35,19 @@ router.post('/add-product-post', (req, res, next) => {
         console.log("Image saving error", err)
       }
     })
+  })
+})
+router.get('/delete-product/:id', (req, res, next) => {
+  //for getting product id through paramas
+  let proId = req.params.id
+  console.log('admin', proId)
+  productHelpers.deleteProduct(proId).then((response) => {
+    if (!err) {
+      //render page or send message
+      res.send('Product deleted')
+    } else {
+      console.log("Product delete error", err)
+    }
   })
 })
 

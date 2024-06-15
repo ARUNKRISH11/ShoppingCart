@@ -10,3 +10,25 @@ User navbar
 Admin navbar
 Admin page
 Products add form 
+
+
+product-delete
+Getting product id
+
+method1
+hbs: <td><a href="/admin/delete-product?id={{this._id}}&name=arun" class="btn btn-danger">Delete</a></td>
+js: router.get('/delete-product/',(req, res,next)=>{
+  //for getting product id
+  let proId=req.query.id
+  console.log(proId)
+  console.log(req.query.name)
+})
+//values passing through '/?=' and reciving through 'query.'
+
+method2
+hbs: <td><a href="/admin/delete-product/{{this._id}}" class="btn btn-danger">Delete</a></td>
+js: router.get('/delete-product/:id',(req, res,next)=>{
+  //for getting product id through paramas
+  let proId=req.params.id
+  console.log(proId)
+})
