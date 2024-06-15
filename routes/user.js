@@ -18,7 +18,8 @@ router.get('/login', (req, res, next) => {
   if (req.session.loggedIn) {
     res.redirect('/')
   } else {
-    res.render("user/login")
+    res.render("user/login",{'LoginError':req.session.loginError})
+    req.session.loginError=false
   }
 })
 router.post('/user/login', (req, res, next) => {
@@ -31,6 +32,8 @@ router.post('/user/login', (req, res, next) => {
       //the page already mentioned above. So there using redirect
       res.redirect('/')
     } else {
+      //user not found message
+      req.session.loginError='Check your email address or password once again!'
       res.redirect('/login')
     }
   })

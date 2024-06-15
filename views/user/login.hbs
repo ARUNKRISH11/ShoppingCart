@@ -5,6 +5,11 @@
             <div class="mt-4">
                 <h4 class="text-center">Login</h4>
             </div>
+            {{#if LoginError}}
+            <div class="mt-4">
+                <p class="text-danger">{{LoginError}}</p>
+            </div>
+            {{/if}}
             <form action="user/login" method="post">
                 <div class="mt-3 form-group">
                     <label for="name">Email Address </label>
@@ -17,7 +22,8 @@
                     <br>
                 </div>
                 <a class="me-5" href="/signup">Create new account ?</a>
-                <button type="submit" class="ms-5 btn btn-success" >Login</button>
+                <button type="submit" class="ms-5 btn btn-success" data-toggle="modal"
+                    data-target="#exampleModal">Login</button>
             </form>
         </div>
     </div>
