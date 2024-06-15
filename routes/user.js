@@ -52,5 +52,8 @@ router.get('/logout', (req, res, next) => {
   req.session.destroy()
   res.render('user/logout')
 })
+router.get('/cart',(req,res,next)=>{
+  res.render('user/cart')
+})
 
 module.exports = router;
