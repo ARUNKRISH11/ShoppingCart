@@ -52,7 +52,7 @@ router.get('/signup', (req, res, next) => {
     res.redirect('/')
   } else {
     res.render("user/signup")
-    req.session.loggedIn=false
+    req.session.loggedIn = false
   }
 })
 router.post('/user/signup', (req, res, next) => {
@@ -72,6 +72,17 @@ router.get('/logout', (req, res, next) => {
 router.get('/cart', verifyLogin, (req, res, next) => {
   let user = req.session.user
   res.render('user/cart', { user })
+})
+router.get('/add-to-cart/:id', verifyLogin, (req, res, next) => {
+  //accessing user id and product id
+  productId = req.params.id
+  userId = req.session.user._id
+  user = req.session.user
+  //console.log('id error')
+  //console.log(productId, userId)
+  userHelpers.addToCart(productId, userId, user).then(() => {
+    res.redirect('/')
+  })
 })
 
 module.exports = router;

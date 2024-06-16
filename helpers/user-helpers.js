@@ -1,7 +1,9 @@
 var dataBase = require('../config/db-connect')
-const bcrypt = require('bcrypt') //npm i bcrypt
+const bcrypt = require('bcrypt'); //npm i bcrypt
+const { response } = require('express');
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = 'mongodb://0.0.0.0:27017/'
+var objectId = require('mongodb').ObjectId
 
 const client = new MongoClient(uri, {
     serverApi: {
@@ -57,6 +59,31 @@ module.exports = {
                 resolve({ status: false })
             }
         })
+    },
+    //add to cart: creating DB with users id
+    addToCart: (productId, userId, user) => {
+        return new Promise(async (resolve, reject) => {
+            //if the user have cart, the product will add to cart otherwise create db cart and add.
+            let userCart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: new objectId(userId) })
+            if (userCart) {
+                console.log('started if')
+                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne({ user: new objectId(userId) }, {
+                    $push: { products: new objectId(productId) }
+                }).then((response) => {
+                    resolve()
+                })
+                console.log('insert error')
+            } else {
+                //creat cart collection: contain user id and product array
+                let cartObj = {
+                    userName: user.name,
+                    user: new objectId(userId),
+                    products: [new objectId(productId)]
+                }
+                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).insertOne(cartObj).then((response) => {
+                    resolve()
+                })
+            }
+        })
     }
-
 }
