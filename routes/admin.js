@@ -40,11 +40,25 @@ router.post('/add-product', (req, res, next) => {
 router.get('/delete-product/:id', (req, res, next) => {
   //for getting product id through paramas
   let proId = req.params.id
-  console.log('admin', proId)
+  //console.log('admin', proId)
   productHelpers.deleteProduct(proId).then((response) => {
-    console.log("Product delete error")
+    //console.log("Product delete error")
     res.redirect('/admin')
   })
 })
+router.get('/edit-product/:id', async (req, res, next) => {
+  let product = await productHelpers.getProductDetailes(req.params.id)
+  //console.log(product)
+  res.render('admin/edit-product', { product, admin: true })
 
+})
+router.post('/edit-product/:id', (req, res, next) => {
+  //the form action should be: action="/admin/edit-product/{{product._id}}"
+  //console.log('error function')
+  //for updating the product id not changing so there accessing id
+  productHelpers.updateProduct(req.params.id, req.body).then(() => {
+    //console.log('error function')
+    res.redirect('/admin')
+  })
+})
 module.exports = router;

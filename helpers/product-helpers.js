@@ -45,13 +45,37 @@ module.exports = {
         })
     },
     deleteProduct: (productId) => {
-        console.log('helpers', productId)
+        //console.log('helpers', productId)
         return new Promise(async (resolve, reject) => {
             await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).deleteOne({ _id: new objectId(productId) }).then((response) => {
                 //gathering the informations about deleted item
                 console.log(response);
                 resolve(response)
             })
+        })
+    },
+    getProductDetailes: (productId) => {
+        return new Promise(async (resolve, reject) => {
+            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).findOne({ _id: new objectId(productId) }).then((product) => {
+                resolve(product)
+            })
+        })
+    },
+    updateProduct: (productId, productDetailes) => {
+        return new Promise(async (resolve, reject) => {
+            //console.log('function start')
+            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).updateOne({ _id: new objectId(productId) }, {
+                //items want to update
+                $set: {
+                    name: productDetailes.name,
+                    category: productDetailes.category,
+                    price: productDetailes.price,
+                    description: productDetailes.description
+                }
+            }).then((response) => {
+                resolve()
+            })
+            //console.log('function end')
         })
     }
 
