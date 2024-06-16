@@ -64,15 +64,20 @@ module.exports = {
     updateProduct: (productId, productDetailes) => {
         return new Promise(async (resolve, reject) => {
             //console.log('function start')
-            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).updateOne({ _id: new objectId(productId) }, {
-                //items want to update
-                $set: {
-                    name: productDetailes.name,
-                    category: productDetailes.category,
-                    price: productDetailes.price,
-                    description: productDetailes.description
+            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).updateOne(
+                {
+                    _id: new objectId(productId)
+                },
+                {
+                    //items want to update
+                    $set: {
+                        name: productDetailes.name,
+                        category: productDetailes.category,
+                        price: productDetailes.price,
+                        description: productDetailes.description
+                    }
                 }
-            }).then((response) => {
+            ).then((response) => {
                 resolve()
             })
             //console.log('function end')
