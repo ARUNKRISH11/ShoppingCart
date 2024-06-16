@@ -66,13 +66,18 @@ module.exports = {
             //if the user have cart, the product will add to cart otherwise create db cart and add.
             let userCart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: new objectId(userId) })
             if (userCart) {
-                console.log('started if')
-                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne({ user: new objectId(userId) }, {
-                    $push: { products: new objectId(productId) }
-                }).then((response) => {
+                //console.log('started if')
+                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                    {
+                        user: new objectId(userId)
+                    },
+                    {
+                        $push: { products: new objectId(productId) }
+                    }
+                ).then((response) => {
                     resolve()
                 })
-                console.log('insert error')
+                //console.log('insert error')
             } else {
                 //creat cart collection: contain user id and product array
                 let cartObj = {
@@ -84,6 +89,38 @@ module.exports = {
                     resolve()
                 })
             }
+        })
+    },
+    //all added products 
+    getCartProducts: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let cartItems = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
+                {
+                    //selecting the cart
+                    $match: { user: new objectId(userId) }
+                },
+                {
+                    //SQL joining two tables
+                    $lookup: {
+                        from: dataBase.CART_COLLECTION,
+                        //accessing variable productList to all available products from DB
+                        let: { productList: '$products' },
+                        pipeline: [
+                            {
+                                $match: { //writing conditions
+                                    $expr: {
+                                        //matching id with all id in productList
+                                        $in: ['$_id', '$$productList']
+                                    }
+                                }
+                            }
+                        ],
+                        //we got productList
+                        as: 'cartItems'
+                    }
+                }
+            ]).toArray()
+            resolve(cartItems[0].cartItems)
         })
     }
 }

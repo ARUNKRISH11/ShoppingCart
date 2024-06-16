@@ -36,3 +36,6 @@ js: router.get('/delete-product/:id',(req, res,next)=>{
 ADD TO CART CONCEPT: 
 Creating collection cart by using user id and add products id.
 After add to cart user can purchase the items then the cart remain empty
+
+aggregate() in MongoDB
+matching and get the data
