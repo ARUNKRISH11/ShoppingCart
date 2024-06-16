@@ -47,14 +47,20 @@ router.post('/user/login', (req, res, next) => {
   })
 })
 router.get('/signup', (req, res, next) => {
-  res.render("user/signup")
+  console.log(req.session.loggedIn)
+  if (req.session.loggedIn) {
+    res.redirect('/')
+  } else {
+    res.render("user/signup")
+    req.session.loggedIn=false
+  }
 })
 router.post('/user/signup', (req, res, next) => {
   userHelpers.doSignup(req.body).then((response) => {
     //console.log('response error')
     //console.log(response)
-    req.session.loggedIn=true
-    req.session.user=response.user
+    req.session.loggedIn = true
+    req.session.user = response.user
     res.redirect('/')
   })
 })
