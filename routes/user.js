@@ -51,8 +51,11 @@ router.get('/signup', (req, res, next) => {
 })
 router.post('/user/signup', (req, res, next) => {
   userHelpers.doSignup(req.body).then((response) => {
+    //console.log('response error')
     //console.log(response)
-    res.redirect('/login')
+    req.session.loggedIn=true
+    req.session.user=response.user
+    res.redirect('/')
   })
 })
 router.get('/logout', (req, res, next) => {

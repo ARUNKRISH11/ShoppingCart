@@ -14,13 +14,23 @@ const client = new MongoClient(uri, {
 
 module.exports = {
     doSignup: (userData) => {
+        let response = {}
         return new Promise(async (resolve, reject) => {
             //callback or await: for execution of one line of code then other
             userData.password = await bcrypt.hash(userData.password, 10)
             await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).insertOne(userData).then((data) => {
-                resolve(data.insertedId.toString())
+                return new Promise(async (resolve, reject) => {
+                    let user = await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({ email: userData.email })
+                    response.user = user
+                    //console.log('user response')
+                    //console.log(response.user)
+                    //userId=data.insertedId.toString()
+                    resolve(response)
+                })
 
             })
+            console.log(response)
+            resolve(response)
         })
     },
     doLogin: (userData) => {
@@ -28,23 +38,23 @@ module.exports = {
             let loginStatus = false
             let response = {}
             //matching email
-            let user = await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({ email:userData.email })
+            let user = await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({ email: userData.email })
             if (user) {
                 //matching password 
                 bcrypt.compare(userData.password, user.password).then((status) => {
                     if (status) {
                         console.log("Login success")
-                        response.user=user
-                        response.status=true
+                        response.user = user
+                        response.status = true
                         resolve(response)
                     } else {
                         console.log("Login failed. Check your password!")
-                        resolve({status:false})
+                        resolve({ status: false })
                     }
                 })
             } else {
                 console.log("Login failed. User not found!")
-                resolve({status:false})
+                resolve({ status: false })
             }
         })
     }
