@@ -39,9 +39,9 @@ router.post('/add-product', (req, res, next) => {
 })
 router.get('/delete-product/:id', (req, res, next) => {
   //for getting product id through paramas
-  let proId = req.params.id
+  let productId = req.params.id
   //console.log('admin', proId)
-  productHelpers.deleteProduct(proId).then((response) => {
+  productHelpers.deleteProduct(productId).then((response) => {
     //console.log("Product delete error")
     res.redirect('/admin')
   })
