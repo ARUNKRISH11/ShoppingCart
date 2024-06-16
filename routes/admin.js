@@ -59,6 +59,15 @@ router.post('/edit-product/:id', (req, res, next) => {
   productHelpers.updateProduct(req.params.id, req.body).then(() => {
     //console.log('error function')
     res.redirect('/admin')
+    //after redirect so the user get response first
+    //image updating
+    const id = req.params.id
+    let Image = req.files.image
+    if (Image) {
+      Image.mv('./public/product-images/' + id + '.jpg')
+    } else {
+      console.log('Image edie error')
+    }
   })
 })
 module.exports = router;
