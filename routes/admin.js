@@ -42,12 +42,8 @@ router.get('/delete-product/:id', (req, res, next) => {
   let proId = req.params.id
   console.log('admin', proId)
   productHelpers.deleteProduct(proId).then((response) => {
-    if (!err) {
-      //render page or send message
-      res.send('Product deleted')
-    } else {
-      console.log("Product delete error", err)
-    }
+    console.log("Product delete error")
+    res.redirect('/admin')
   })
 })
 

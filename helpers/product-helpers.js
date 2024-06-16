@@ -47,7 +47,7 @@ module.exports = {
     deleteProduct: (productId) => {
         console.log('helpers', productId)
         return new Promise(async (resolve, reject) => {
-            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).removeOne({ _id: objectId(productId) }).then((response) => {
+            await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).deleteOne({ _id: new objectId(productId) }).then((response) => {
                 //gathering the informations about deleted item
                 console.log(response);
                 resolve(response)
