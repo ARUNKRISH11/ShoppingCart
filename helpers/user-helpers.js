@@ -132,6 +132,17 @@ module.exports = {
             }
             resolve(productId)
         })
-
+    },
+    //cart items count
+    getCartCount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let cartCount = 0
+            let cartUser = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
+            if (cartUser) {
+                //finding array elements
+                cartCount = cartUser.products.length
+            }
+            resolve(cartCount)
+        })
     }
 }

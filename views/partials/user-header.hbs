@@ -7,18 +7,16 @@
                 aria-controls="navbarTogglerDemo03" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            {{#if user}}
             <a class="navbar-brand" href="/">StoreBuddy</a>
-            {{else}}
-            <a class="navbar-brand" href="#">StoreBuddy</a>
-            {{/if}}
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
                         <a class="nav-link active" aria-current="page" href="#">Products</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link active" aria-current="page" href="/cart">Cart</a>
+                        <a class="nav-link active" aria-current="page" href="/cart">Cart
+                            <span class=" badge rounded-pill bg-primary">{{cartCount}}</span>
+                        </a>
                     </li>
                     <li class="nav-item">
                         {{#if user}}

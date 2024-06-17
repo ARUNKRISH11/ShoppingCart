@@ -13,14 +13,24 @@ const verifyLogin = (req, res, next) => {
 }
 
 /* GET home page. */
-router.get('/', function (req, res, next) {
-  //user loggedin section
+router.get('/', async function (req, res, next) {
   let user = req.session.user
-  //accessing product detailes from DB
-  productHelpers.getAllProducts().then((products) => {
-    //console.log('session', user)
-    res.render("user/view-products", { products, admin: false, user })
-  })
+  if (user) {
+    //user loggedin section
+    //cart items count
+    let cartCount = await userHelpers.getCartCount(user._id)
+    console.log('cart count')
+    console.log(cartCount)
+    //accessing product detailes from DB
+    productHelpers.getAllProducts().then((products) => {
+      //console.log('session', user)
+      res.render("user/view-products", { products, cartCount, user })
+    })
+  } else {
+    productHelpers.getAllProducts().then((products) => {
+      res.render("user/view-products", { products })
+    })
+  }
 });
 router.get('/login', (req, res, next) => {
   if (req.session.loggedIn) {
