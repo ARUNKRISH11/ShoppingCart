@@ -64,12 +64,13 @@ module.exports = {
     addToCart: (productId, userId, user) => {
         return new Promise(async (resolve, reject) => {
             //if the user have cart, the product will add to cart otherwise create db cart and add.
-            let userCart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: new objectId(userId) })
+            let userCart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
             if (userCart) {
                 //console.log('started if')
                 await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
                     {
-                        user: new objectId(userId)
+                        //matching userid with user
+                        user: userId
                     },
                     {
                         $push: { products: new objectId(productId) }
@@ -82,7 +83,7 @@ module.exports = {
                 //creat cart collection: contain user id and product array
                 let cartObj = {
                     userName: user.name,
-                    user: new objectId(userId),
+                    user: userId,
                     products: [new objectId(productId)]
                 }
                 await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).insertOne(cartObj).then((response) => {
@@ -97,30 +98,34 @@ module.exports = {
             let cartItems = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
                 {
                     //selecting the cart
-                    $match: { user: new objectId(userId) }
+                    $match: { user: userId }
                 },
                 {
                     //SQL joining two tables
                     $lookup: {
-                        from: dataBase.CART_COLLECTION,
-                        //accessing variable productList to all available products from DB
+                        from: dataBase.PRODUCT_COLLECTION,
+                        //accessing variable productList to all available products from DB array
                         let: { productList: '$products' },
                         pipeline: [
                             {
-                                $match: { //writing conditions
+                                //writing conditions to match user products array to products DB
+                                $match: {
                                     $expr: {
-                                        //matching id with all id in productList
+                                        //matching product collection id with all id in productList
+                                        //issue while matching the ID's
                                         $in: ['$_id', '$$productList']
                                     }
                                 }
                             }
                         ],
-                        //we got productList
+                        //we got productList and it saving
+                        //matching items(productList with products DB) saving in cartItems
                         as: 'cartItems'
                     }
                 }
             ]).toArray()
-            resolve(cartItems[0].cartItems)
+            productId = cartItems[0].cartItems
+            resolve(productId)
         })
     }
 }
