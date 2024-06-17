@@ -3,26 +3,36 @@
     <div class="container mt-4">
         <div class="row">
             <div class="col-md-12 m-auto">
-                <div class="mt-4">
-                    {{#if products}}
-                    <h4 class="text-center">Cart</h4>
-                    {{else}}
-                    <h4 class="text-center">Cart is empty</h4>
-                    {{/if}}
+                <div class="mt-2">
+                    <h4 class="text-center">Cart</h4><br>
                 </div>
             </div>
-            {{#each products}}
-            <div class="col-md-4 pb-4">
-                <div class="card" style="width: 18rem;height: 28rem">
-                    <img src="/product-images/{{products._id}}.jpg" class="card-img-top" alt="Image loading"
-                        style="height: 180px">
-                    <div class="card-body">
-                        <h5 class="card-title">{{products.name}}</h5>
-                        <p class="card-text">{{products.description}}</p>
-                    </div>
-                </div>
-            </div>
-            {{/each}}
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">Item</th>
+                        <th scope="col">Title</th>
+                        <th scope="col">Quantity</th>
+                        <th scope="col">Button</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><img src="https://images.macrumors.com/t/oiWkxB5isnYn8BFbcgKsnDIUOdI=/800x0/smart/article-new/2023/09/iPhone-15-Pro-Lineup-Feature.jpg?lossy"
+                                alt="" style="width: 70px; height: 70px">
+                        <td>iPhone 15 Pro Max</td>
+                        <td>
+                            <button class="cart-item-count btn btn-danger me-2">-</button>
+                            1
+                            <button class="cart-item-count btn btn-success ms-2">+</button>
+                        </td>
+                        <td>
+                            <a href="" class="btn btn-danger">Remove</a>
+                        </td>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
 
         </div>
     </div>
