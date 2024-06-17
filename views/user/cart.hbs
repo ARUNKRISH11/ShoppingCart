@@ -4,9 +4,14 @@
         <div class="row">
             <div class="col-md-12 m-auto">
                 <div class="mt-2">
-                    <h4 class="text-center">Cart</h4><br>
+                    {{#if products}}
+                    <h4 class="text-center">Cart Items</h4><br>
+                    {{else}}
+                    <h4 class="text-center">Cart is empty!</h4><br>
+                    {{/if}}
                 </div>
             </div>
+            {{#if products}}
             <table class="table">
                 <thead>
                     <tr>
@@ -17,23 +22,25 @@
                     </tr>
                 </thead>
                 <tbody>
+                    {{#each products}}
                     <tr>
-                        <td><img src="https://images.macrumors.com/t/oiWkxB5isnYn8BFbcgKsnDIUOdI=/800x0/smart/article-new/2023/09/iPhone-15-Pro-Lineup-Feature.jpg?lossy"
-                                alt="" style="width: 70px; height: 70px">
-                        <td>iPhone 15 Pro Max</td>
+                        <td><img src="/product-images/{{this._id}}.jpg"
+                                alt="" style="width: 110px; height: 70px">
+                        <td>{{this.name}}</td>
                         <td>
-                            <button class="cart-item-count btn btn-danger me-2">-</button>
+                            <button class="cart-item-count btn btn-primary me-2">-</button>
                             1
-                            <button class="cart-item-count btn btn-success ms-2">+</button>
+                            <button class="cart-item-count btn btn-primary ms-2">+</button>
                         </td>
                         <td>
                             <a href="" class="btn btn-danger">Remove</a>
                         </td>
                         </td>
                     </tr>
+                    {{/each}}
                 </tbody>
             </table>
-
+            {{/if}}
         </div>
     </div>
 </section>

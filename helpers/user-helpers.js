@@ -95,37 +95,43 @@ module.exports = {
     //all added products 
     getCartProducts: (userId) => {
         return new Promise(async (resolve, reject) => {
-            let cartItems = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
-                {
-                    //selecting the cart
-                    $match: { user: userId }
-                },
-                {
-                    //SQL joining two tables
-                    $lookup: {
-                        from: dataBase.PRODUCT_COLLECTION,
-                        //accessing variable productList to all available products from DB array
-                        let: { productList: '$products' },
-                        pipeline: [
-                            {
-                                //writing conditions to match user products array to products DB
-                                $match: {
-                                    $expr: {
-                                        //matching product collection id with all id in productList
-                                        //issue while matching the ID's
-                                        $in: ['$_id', '$$productList']
+            let cartUser = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
+            if (cartUser) {
+                let cartItems = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
+                    {
+                        //selecting the cart
+                        $match: { user: userId }
+                    },
+                    {
+                        //SQL joining two tables
+                        $lookup: {
+                            from: dataBase.PRODUCT_COLLECTION,
+                            //accessing variable productList to all available products from DB array
+                            let: { productList: '$products' },
+                            pipeline: [
+                                {
+                                    //writing conditions to match user products array to products DB
+                                    $match: {
+                                        $expr: {
+                                            //matching product collection id with all id in productList
+                                            //issue while matching the ID's
+                                            $in: ['$_id', '$$productList']
+                                        }
                                     }
                                 }
-                            }
-                        ],
-                        //we got productList and it saving
-                        //matching items(productList with products DB) saving in cartItems
-                        as: 'cartItems'
+                            ],
+                            //we got productList and it saving
+                            //matching items(productList with products DB) saving in cartItems
+                            as: 'cartItems'
+                        }
                     }
-                }
-            ]).toArray()
-            productId = cartItems[0].cartItems
+                ]).toArray()
+                productId = cartItems[0].cartItems
+            } else {
+                productId = false
+            }
             resolve(productId)
         })
+
     }
 }
