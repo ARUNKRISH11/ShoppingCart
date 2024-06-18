@@ -128,34 +128,33 @@ module.exports = {
                         $match: { user: userId }
                     },
                     {
-                        //SQL joining two tables
+                        //create multiple obj for different product ids
+                        $unwind: '$products'
+                    },
+                    {
+                        //selecting item and quantity
+                        $project: {
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    {
                         $lookup: {
+                            //matching products id with products from DB
                             from: dataBase.PRODUCT_COLLECTION,
-                            //accessing variable productList to all available products from DB array
-                            let: { productList: '$products' },
-                            pipeline: [
-                                {
-                                    //writing conditions to match user products array to products DB
-                                    $match: {
-                                        $expr: {
-                                            //matching product collection id with all id in productList
-                                            //issue while matching the ID's
-                                            $in: ['$_id', '$$productList']
-                                        }
-                                    }
-                                }
-                            ],
-                            //we got productList and it saving
-                            //matching items(productList with products DB) saving in cartItems
-                            as: 'cartItems'
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
                         }
                     }
                 ]).toArray()
-                productId = cartItems[0].cartItems
+                //console.log('cart items');
+                //console.log(cartItems);
+                resolve(cartItems)
             } else {
-                productId = false
+                cartItems = false
+                resolve(cartItems)
             }
-            resolve(productId)
         })
     },
     //cart items count

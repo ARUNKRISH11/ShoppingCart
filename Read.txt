@@ -41,3 +41,28 @@ aggregate() in MongoDB
 matching and get the data
 
 Ajax: to update special part of the page. Write in js
+
+$unwind: create multiple array according to condition
+[
+  {
+    _id: new ObjectId('6671a7a9aa922090a9828486'),
+    userName: 'Arun ',
+    user: '666c52ce48c874c110eda1f9',
+    products: [ [Object], [Object] ]
+  }
+]
+$unwind: '$products'
+[
+  {
+    _id: new ObjectId('6671d4dd6e6012f63bd79dde'),
+    userName: 'Arun ',
+    user: '666c52ce48c874c110eda1f9',
+    products: { item: '6669bc50b0c025eaa499ce32', quantity: 1 }
+  },
+  {
+    _id: new ObjectId('6671d4dd6e6012f63bd79dde'),
+    userName: 'Arun ',
+    user: '666c52ce48c874c110eda1f9',
+    products: { item: '6669bcdfb0c025eaa499ce34', quantity: 1 }
+  }
+]

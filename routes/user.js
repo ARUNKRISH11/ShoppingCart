@@ -82,9 +82,10 @@ router.get('/logout', (req, res, next) => {
 router.get('/cart', verifyLogin, async (req, res, next) => {
   user = req.session.user
   userId = req.session.user._id
+  //this products required because loading cart items
   let products = await userHelpers.getCartProducts(userId)
-  console.log('products')
-  console.log(products)
+  //console.log('products')
+  //console.log(products)
   res.render('user/cart', { user, products })
 })
 router.get('/add-to-cart/:id', (req, res, next) => {
@@ -97,7 +98,7 @@ router.get('/add-to-cart/:id', (req, res, next) => {
   userHelpers.addToCart(productId, userId, user).then(() => {
     //json: data representing format
     //sending true to script
-    res.json({status:true})
+    res.json({ status: true })
   })
 })
 
