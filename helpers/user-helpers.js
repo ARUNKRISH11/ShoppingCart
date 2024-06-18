@@ -62,29 +62,54 @@ module.exports = {
     },
     //add to cart: creating DB with users id
     addToCart: (productId, userId, user) => {
+        let productObj = {
+            item: new objectId(productId),
+            quantity: 1
+        }
         return new Promise(async (resolve, reject) => {
             //if the user have cart, the product will add to cart otherwise create db cart and add.
             let userCart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
             if (userCart) {
                 //console.log('started if')
-                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
-                    {
-                        //matching userid with user
-                        user: userId
-                    },
-                    {
-                        $push: { products: new objectId(productId) }
-                    }
-                ).then((response) => {
-                    resolve()
-                })
-                //console.log('insert error')
+                let productExist = userCart.products.findIndex(product => product.item == productId)
+                //console.log('product exist');
+                //product index -1: not eixst 
+                if (productExist != -1) {
+                    //user have cart and adding same product
+                    await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                        {
+                            //error while different user adding same item (solved)
+                            'user': userId,
+                            'products.item': new objectId(productId)
+                        },
+                        {
+                            //increament function to increse product quantity
+                            $inc: { 'products.$.quantity': 1 }
+                        }).then(() => {
+                            resolve()
+                        })
+                } else {
+                    //user have cart and adding different product
+                    await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                        {
+                            //matching userid with user
+                            user: userId
+                        },
+                        {
+                            $push: { products: productObj }
+                        }
+                    ).then((response) => {
+                        resolve()
+                    })
+                    //console.log('insert error')
+                }
+
             } else {
                 //creat cart collection: contain user id and product array
                 let cartObj = {
                     userName: user.name,
                     user: userId,
-                    products: [new objectId(productId)]
+                    products: [productObj]
                 }
                 await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).insertOne(cartObj).then((response) => {
                     resolve()
@@ -144,7 +169,5 @@ module.exports = {
             }
             resolve(cartCount)
         })
-    },
-    //cart items quantity display (if one product added multiple time)
-    
+    }
 }
