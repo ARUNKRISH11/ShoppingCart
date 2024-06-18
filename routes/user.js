@@ -19,8 +19,8 @@ router.get('/', async function (req, res, next) {
     //user loggedin section
     //cart items count
     let cartCount = await userHelpers.getCartCount(user._id)
-    console.log('cart count')
-    console.log(cartCount)
+    //console.log('cart count')
+    //console.log(cartCount)
     //accessing product detailes from DB
     productHelpers.getAllProducts().then((products) => {
       //console.log('session', user)
@@ -92,10 +92,12 @@ router.get('/add-to-cart/:id', verifyLogin, (req, res, next) => {
   productId = req.params.id
   userId = req.session.user._id
   user = req.session.user
-  //console.log('id error')
-  //console.log(productId, userId)
+  console.log('id error')
+  console.log(productId, userId)
   userHelpers.addToCart(productId, userId, user).then(() => {
-    res.redirect('/')
+    //json: data representing format
+    //sending true to script
+    res.json({status:true})
   })
 })
 

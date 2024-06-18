@@ -39,3 +39,5 @@ After add to cart user can purchase the items then the cart remain empty
 
 aggregate() in MongoDB
 matching and get the data
+
+Ajax: to update special part of the page. Write in js
