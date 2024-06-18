@@ -87,13 +87,13 @@ router.get('/cart', verifyLogin, async (req, res, next) => {
   console.log(products)
   res.render('user/cart', { user, products })
 })
-router.get('/add-to-cart/:id', verifyLogin, (req, res, next) => {
+router.get('/add-to-cart/:id', (req, res, next) => {
   //accessing user id and product id
   productId = req.params.id
   userId = req.session.user._id
   user = req.session.user
-  console.log('id error')
-  console.log(productId, userId)
+  //console.log('id error')
+  //console.log(productId, userId)
   userHelpers.addToCart(productId, userId, user).then(() => {
     //json: data representing format
     //sending true to script

@@ -144,5 +144,7 @@ module.exports = {
             }
             resolve(cartCount)
         })
-    }
+    },
+    //cart items quantity display (if one product added multiple time)
+    
 }
