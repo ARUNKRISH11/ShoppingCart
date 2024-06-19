@@ -101,9 +101,11 @@ router.get('/add-to-cart/:id', (req, res, next) => {
     res.json({ status: true })
   })
 })
-router.post('/change-quantity/', async (req, res, next) => {
+router.post('/change-quantity/', (req, res, next) => {
   //console.log('change quantity');
-  userHelpers.changeQuantity(req.body).then(() => {
+  userHelpers.changeQuantity(req.body).then((response) => {
+    //refreshing a part of page (not loading the full page , so using res.json)
+    res.json(response)
   })
 })
 

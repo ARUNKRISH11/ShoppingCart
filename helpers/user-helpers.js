@@ -184,19 +184,34 @@ module.exports = {
         //console.log(detailes.cart,detailes.product,detailes.count)
         return new Promise(async (resolve, reject) => {
             count = parseInt(detailes.count)
-            await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
-                {
-                    //error while different user adding same item (solved)
-                    '_id': new objectId(detailes.cart),
-                    'products.item': new objectId(detailes.product)
-                },
-                {
-                    //increament function to increse product quantity
-                    $inc: { 'products.$.quantity': count }
-                }).then(async (response) => {
-                    console.log('response')
-                    resolve(response)
+            quantity = parseInt(detailes.quantity)
+            if (count == -1 && quantity == 1) {
+                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                    {
+                        _id: new objectId(detailes.cart)
+                    },
+                    {
+                        //removing one product from cart
+                        $pull: { products: { item: new objectId(detailes.product) } }
+                    }
+                ).then((response) => {
+                    resolve({ removeProduct: true })
                 })
+            } else {
+                await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                    {
+                        //error while different user adding same item (solved)
+                        '_id': new objectId(detailes.cart),
+                        'products.item': new objectId(detailes.product)
+                    },
+                    {
+                        //increament function to increse product quantity
+                        $inc: { 'products.$.quantity': count }
+                    }).then((response) => {
+                        resolve(true)
+                    })
+            }
+
         })
     }
 }

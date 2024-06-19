@@ -29,17 +29,28 @@ function addToCart(productId) {
 }
 //change qunatity
 function changeQuantity(cartId, productId, count) {
+    let quantity = parseInt(document.getElementById(productId).innerHTML)
+    count = parseInt(count)
+    console.log('ajax');
+    console.log(quantity);
     $.ajax({
         url: '/change-quantity/',
         data: {
             //data passing to url
             cart: cartId,
             product: productId,
-            count: count
+            count: count,
+            quantity: quantity
         },
         method: 'post',
         success: (response) => {
-            alert(response)
+            if (response.removeProduct) {
+                alert("Product Removed from cart")
+                location.reload()
+            } else {
+                document.getElementById(productId).innerHTML = quantity + count
+                //location.reload()
+            }
         }
     })
 }
