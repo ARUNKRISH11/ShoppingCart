@@ -19,11 +19,27 @@ function addToCart(productId) {
         success: (response) => {
             if (response.status) {
                 //accessing already have cart count (the cart count will be in string) and increasing
-                let count=$('#cart-count').html()
+                let count = $('#cart-count').html()
                 //parseInt: string convert into int 
-                count=parseInt(count)+1
+                count = parseInt(count) + 1
                 $('#cart-count').html(count)
-            } 
+            }
+        }
+    })
+}
+//change qunatity
+function changeQuantity(cartId, productId, count) {
+    $.ajax({
+        url: '/change-quantity/',
+        data: {
+            //data passing to url
+            cart: cartId,
+            product: productId,
+            count: count
+        },
+        method: 'post',
+        success: (response) => {
+            alert(response)
         }
     })
 }

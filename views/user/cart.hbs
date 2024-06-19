@@ -24,14 +24,16 @@
                 <tbody>
                     {{#each products}}
                     <tr>
-                        {{#each this.product}}
-                        <td><img src="/product-images/{{this._id}}.jpg" alt="" style="width: 110px; height: 70px">
-                        <td>{{this.name}}</td>
-                        {{/each}}
+                        <td><img src="/product-images/{{this.product._id}}.jpg" alt=""
+                                style="width: 110px; height: 70px">
+                        <td>{{this.product.name}}</td>
                         <td>
-                            <button class="cart-item-count btn btn-primary me-2">-</button>
+                            <!-- want to pass cart id, product id and product quantity in function changeQuantity -->
+                            <button class="cart-item-count btn btn-primary me-2"
+                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
                             {{this.quantity}}
-                            <button class="cart-item-count btn btn-primary ms-2">+</button>
+                            <button class="cart-item-count btn btn-primary ms-2"
+                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button>
                         </td>
                         <td>
                             <a href="" class="btn btn-danger">Remove</a>

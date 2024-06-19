@@ -101,5 +101,10 @@ router.get('/add-to-cart/:id', (req, res, next) => {
     res.json({ status: true })
   })
 })
+router.post('/change-quantity/', async (req, res, next) => {
+  //console.log('change quantity');
+  userHelpers.changeQuantity(req.body).then(() => {
+  })
+})
 
 module.exports = router;

@@ -132,7 +132,7 @@ module.exports = {
                         $unwind: '$products'
                     },
                     {
-                        //selecting item and quantity
+                        //selecting item and quantity from DB Cart and assign to variables
                         $project: {
                             item: '$products.item',
                             quantity: '$products.quantity'
@@ -145,6 +145,14 @@ module.exports = {
                             localField: 'item',
                             foreignField: '_id',
                             as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            //whichone want to project from cart to product array
+                            item: 1,
+                            quantity: 1,
+                            product: { $arrayElemAt: ['$product', 0] }
                         }
                     }
                 ]).toArray()
@@ -167,6 +175,28 @@ module.exports = {
                 cartCount = cartUser.products.length
             }
             resolve(cartCount)
+        })
+    },
+    //change quantity
+    //variables in this order set in script (ajax) file
+    changeQuantity: (detailes) => {
+        //console.log('function running');
+        //console.log(detailes.cart,detailes.product,detailes.count)
+        return new Promise(async (resolve, reject) => {
+            count = parseInt(detailes.count)
+            await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                {
+                    //error while different user adding same item (solved)
+                    '_id': new objectId(detailes.cart),
+                    'products.item': new objectId(detailes.product)
+                },
+                {
+                    //increament function to increse product quantity
+                    $inc: { 'products.$.quantity': count }
+                }).then(async (response) => {
+                    console.log('response')
+                    resolve(response)
+                })
         })
     }
 }
