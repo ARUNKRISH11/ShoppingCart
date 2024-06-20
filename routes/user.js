@@ -116,10 +116,10 @@ router.post('/remove-product/', (req, res, next) => {
 })
 router.get('/place-order', verifyLogin, async (req, res, next) => {
   user = req.session.user
-  userId =user._id
+  userId = user._id
   //user each quntity multiple price
   let total = await userHelpers.getTotalAmount(userId)
-  res.render('user/place-order', { user ,total})
+  res.render('user/place-order', { user, total })
 })
 
 module.exports = router;

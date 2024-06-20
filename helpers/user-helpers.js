@@ -268,7 +268,7 @@ module.exports = {
                 },
                 {
                     $group: {
-                        _id:null,
+                        _id: null,
                         total: { $sum: { $multiply: ['$quantity', '$product.price'] } }
                     }
                 }
