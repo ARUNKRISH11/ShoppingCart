@@ -213,5 +213,21 @@ module.exports = {
             }
 
         })
+    },
+    //remove product
+    removeProduct: (detailes) => {
+        return new Promise(async (resolve, reject) => {
+            await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).updateOne(
+                {
+                    _id: new objectId(detailes.cart)
+                },
+                {
+                    //removing one product from cart
+                    $pull: { products: { item: new objectId(detailes.product) } }
+                }
+            ).then((response) => {
+                resolve()
+            })
+        })
     }
 }
