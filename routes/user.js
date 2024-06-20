@@ -84,9 +84,10 @@ router.get('/cart', verifyLogin, async (req, res, next) => {
   userId = req.session.user._id
   //this products required because loading cart items
   let products = await userHelpers.getCartProducts(userId)
+  let total = await userHelpers.getTotalAmount(userId)
   //console.log('products')
   //console.log(products)
-  res.render('user/cart', { user, products })
+  res.render('user/cart', { user, products, total })
 })
 router.get('/add-to-cart/:id', (req, res, next) => {
   //accessing user id and product id
@@ -112,6 +113,13 @@ router.post('/remove-product/', (req, res, next) => {
   userHelpers.removeProduct(req.body).then(() => {
     res.json({ status: true })
   })
+})
+router.get('/place-order', verifyLogin, async (req, res, next) => {
+  user = req.session.user
+  userId =user._id
+  //user each quntity multiple price
+  let total = await userHelpers.getTotalAmount(userId)
+  res.render('user/place-order', { user ,total})
 })
 
 module.exports = router;

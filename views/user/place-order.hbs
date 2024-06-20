@@ -1,0 +1,39 @@
+<!-- place order -->
+<section>
+    <div class="row">
+        <div class="container">
+            <div class="col-md-5 ms-5 mt-5 float-start">
+                <h3>Enter Delivery Details </h3>
+                <form>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Address</label>
+                        <input type="text" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Pincode</label>
+                        <input type="password" class="form-control">
+                    </div>
+                    <div class="mb-3">
+                        <label for="" class="form-label">Mobile Number</label>
+                        <input type="password" class="form-control">
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </form>
+            </div>
+            <div class="col-md-4 me-5 mt-5 float-end">
+                <div class="mt-5" style="width: 16rem;">
+                    <div class="">
+                        <h5>Total Amount: {{total}} Rs/-</h5>
+                        <hr>
+                        <form action="">
+                            <h5>Payment method</h5>
+                            <label for="" class="mt-2"><input type="radio" id="method"> COD</label><br>
+                            <label for="" class="mt-2"><input type="radio" id="method"> Online Payment</label><br>
+                            <button class="btn btn-primary mt-3 float-end ">Check out</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>

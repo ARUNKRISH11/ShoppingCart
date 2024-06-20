@@ -229,5 +229,53 @@ module.exports = {
                 resolve()
             })
         })
+    },
+    //get total amount
+    getTotalAmount: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let total = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
+                {
+                    //selecting the cart
+                    $match: { user: userId }
+                },
+                {
+                    //create multiple obj for different product ids
+                    $unwind: '$products'
+                },
+                {
+                    //selecting item and quantity from DB Cart and assign to variables
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                },
+                {
+                    $lookup: {
+                        //matching products id with products from DB
+                        from: dataBase.PRODUCT_COLLECTION,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $project: {
+                        //whichone want to project from cart to product array
+                        item: 1,
+                        quantity: 1,
+                        product: { $arrayElemAt: ['$product', 0] }
+                    }
+                },
+                {
+                    $group: {
+                        _id:null,
+                        total: { $sum: { $multiply: ['$quantity', '$product.price'] } }
+                    }
+                }
+            ]).toArray()
+            //console.log('cart items');
+            //console.log(total[0].total);
+            resolve(total[0].total)
+        })
     }
 }
