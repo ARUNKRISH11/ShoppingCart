@@ -17,6 +17,7 @@
                     <tr>
                         <th scope="col">Item</th>
                         <th scope="col">Title</th>
+                        <th scope="col">Price</th>
                         <th scope="col">Quantity</th>
                         <th scope="col">Button</th>
                     </tr>
@@ -27,6 +28,7 @@
                         <td><img src="/product-images/{{this.product._id}}.jpg" alt=""
                                 style="width: 110px; height: 70px">
                         <td>{{this.product.name}}</td>
+                        <td>Rs: {{this.product.price}}/-</td>
                         <td>
                             <!-- want to pass cart id, product id and product quantity in function changeQuantity -->
                             <button class="cart-item-count btn btn-primary me-2"
