@@ -5,9 +5,6 @@ body sectiion. If we add this script section before the body  the loading
 of webpage became slow. To avoid that we will add separate javascript file
 in javascript folder and access it before body
 */
-
-const { response } = require("express")
-
 /*
 To execute ajax file we need to add a ajax library in layout.hbs and 
 call this javascript file there. 
@@ -50,7 +47,9 @@ function changeQuantity(cartId, productId, count) {
                 location.reload()
             } else {
                 document.getElementById(productId).innerHTML = quantity + count
-                //location.reload()
+                //you can send data thruough response.variable
+                //console.log(response.total);
+                document.getElementById('total').innerHTML = response.total
             }
         }
     })

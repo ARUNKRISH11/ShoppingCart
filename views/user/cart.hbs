@@ -32,10 +32,10 @@
                         <td>
                             <!-- want to pass cart id, product id and product quantity in function changeQuantity -->
                             <button class="cart-item-count btn btn-primary me-2"
-                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
+                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1,'{{../total}}')">-</button>
                             <span id="{{this.product._id}}">{{this.quantity}}</span>
                             <button class="cart-item-count btn btn-primary ms-2"
-                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button>
+                                onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1,'{{../total}}')">+</button>
                         </td>
                         <td>
                             <button class="btn btn-danger"
@@ -50,7 +50,7 @@
         </div>
     </div>
     <div class="float-end">
-        <h4 class="float-start">Total: {{total}} Rs/-</h4>
+        <h4 class="float-start">Total: <span id="total">{{total}}</span> Rs/-</h4>
         <a href="/place-order" class="col-8 btn btn-success mt-3">
             Place order
         </a>

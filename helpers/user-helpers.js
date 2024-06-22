@@ -208,7 +208,7 @@ module.exports = {
                         //increament function to increse product quantity
                         $inc: { 'products.$.quantity': count }
                     }).then((response) => {
-                        resolve(true)
+                        resolve({ status: true })
                     })
             }
 

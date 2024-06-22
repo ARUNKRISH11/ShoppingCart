@@ -102,15 +102,20 @@ router.get('/add-to-cart/:id', (req, res, next) => {
     res.json({ status: true })
   })
 })
-router.post('/change-quantity/', (req, res, next) => {
-  //console.log('change quantity');
-  userHelpers.changeQuantity(req.body).then((response) => {
+router.post('/change-quantity/', verifyLogin, (req, res, next) => {
+  console.log('change quantity');
+  userHelpers.changeQuantity(req.body).then(async (response) => {
+    userId = req.session.user._id
+    //here you used response.total because response already have object response.status=true
+    //if the response already have any value like respone=true you can't use response.total here.
+    response.total = await userHelpers.getTotalAmount(userId)
     //refreshing a part of page (not loading the full page , so using res.json)
     res.json(response)
   })
 })
 router.post('/remove-product/', (req, res, next) => {
   userHelpers.removeProduct(req.body).then(() => {
+    //there you can't use verifyLogin because you used there json file format
     res.json({ status: true })
   })
 })
