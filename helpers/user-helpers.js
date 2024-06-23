@@ -287,6 +287,7 @@ module.exports = {
             let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
             let orderObj = {
                 deliveryDetailes: {
+                    name: order.userName,
                     mobile: order.mobile,
                     address: order.address,
                     pincode: order.pincode,
@@ -298,9 +299,10 @@ module.exports = {
                 status: status
             }
             await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).insertOne(orderObj).then((respone) => {
+                //clearing cart
+                client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).deleteOne({ user: order.userId })
                 resolve()
             })
-
         })
     },
     getCartProductsList: (userId) => {

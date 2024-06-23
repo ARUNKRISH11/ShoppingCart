@@ -16,7 +16,7 @@
                     <div class="mb-3">
                         <label for="" class="form-label">Mobile Number</label>
                         <input name="mobile" type="number" class="form-control">
-
+                        <input type="text" name="userName" value="{{user.name}}" hidden>
                         <input type="text" name="userId" value="{{user._id}}" hidden>
                     </div>
                 </div>
@@ -52,7 +52,7 @@
             data: $('#checkout-form').serialize(),
             //serialize: to get all data in form
             success: (response) => {
-                alert(response)
+                alert('Thank you for you order')
             }
 
         })
