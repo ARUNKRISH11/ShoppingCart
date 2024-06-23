@@ -85,11 +85,13 @@ router.get('/cart', verifyLogin, async (req, res, next) => {
   //this products required because loading cart items
   let products = await userHelpers.getCartProducts(userId)
   let total = await userHelpers.getTotalAmount(userId)
-  //console.log('products')
-  //console.log(products)
-  res.render('user/cart', { user, products, total })
+  if (total) {
+    res.render('user/cart', { user, products, total })
+  } else {
+    res.render('user/cart', { user, products, total })
+  }
 })
-router.get('/add-to-cart/:id', (req, res, next) => {
+router.get('/add-to-cart/:id', verifyLogin, (req, res, next) => {
   //accessing user id and product id
   productId = req.params.id
   userId = req.session.user._id
@@ -113,7 +115,7 @@ router.post('/change-quantity/', verifyLogin, (req, res, next) => {
     res.json(response)
   })
 })
-router.post('/remove-product/', (req, res, next) => {
+router.post('/remove-product/', verifyLogin, (req, res, next) => {
   userHelpers.removeProduct(req.body).then(() => {
     //there you can't use verifyLogin because you used there json file format
     res.json({ status: true })
@@ -126,13 +128,32 @@ router.get('/place-order', verifyLogin, async (req, res, next) => {
   let total = await userHelpers.getTotalAmount(userId)
   res.render('user/place-order', { user, total })
 })
-router.post('/place-order', async (req, res, next) => {
-  console.log('place order');
+router.post('/place-order', verifyLogin, async (req, res, next) => {
+  //console.log('place order');
   let products = await userHelpers.getCartProductsList(req.body.userId)
   let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
   //console.log(req.body,products,totalPrice);
   userHelpers.placeOrder(req.body, products, totalPrice).then((response) => {
     res.json({ status: true })
   })
+})
+router.get('/order-placed', verifyLogin, (req, res, next) => {
+  user = req.session.user
+  res.render('user/order-placed', { user })
+})
+router.get('/order-detailes', verifyLogin, async (req, res, next) => {
+  user = req.session.user
+  orders = await userHelpers.getUserOrders(user._id)
+  //console.log('order detailes');
+  //console.log(orders);
+  res.render('user/order-detailes', { user, orders })
+})
+router.get('/view-order-products/:id', verifyLogin, async (req, res, next) => {
+  user = req.session.user
+  orderId = req.params.id
+  products = await userHelpers.getOrderProducts(orderId)
+  //console.log('products');
+  //console.log(products);
+  res.render('user/order-products', { products, user })
 })
 module.exports = router;

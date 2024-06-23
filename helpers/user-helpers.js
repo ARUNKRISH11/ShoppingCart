@@ -233,10 +233,106 @@ module.exports = {
     //get total amount
     getTotalAmount: (userId) => {
         return new Promise(async (resolve, reject) => {
-            let total = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
+            let cartUser = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
+            if (cartUser) {
+                let total = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).aggregate([
+                    {
+                        //selecting the cart
+                        $match: { user: userId }
+                    },
+                    {
+                        //create multiple obj for different product ids
+                        $unwind: '$products'
+                    },
+                    {
+                        //selecting item and quantity from DB Cart and assign to variables
+                        $project: {
+                            item: '$products.item',
+                            quantity: '$products.quantity'
+                        }
+                    },
+                    {
+                        $lookup: {
+                            //matching products id with products from DB
+                            from: dataBase.PRODUCT_COLLECTION,
+                            localField: 'item',
+                            foreignField: '_id',
+                            as: 'product'
+                        }
+                    },
+                    {
+                        $project: {
+                            //whichone want to project from cart to product array
+                            item: 1,
+                            quantity: 1,
+                            product: { $arrayElemAt: ['$product', 0] }
+                        }
+                    },
+                    {
+                        $group: {
+                            _id: null,
+                            total: { $sum: { $multiply: ['$quantity', '$product.price'] } }
+                        }
+                    }
+                ]).toArray()
+                //console.log('cart items');
+                //console.log(total[0].total);
+                resolve(total[0].total)
+            } else {
+                resolve(false)
+            }
+        })
+    },
+    //palce order
+    placeOrder: (order, products, total) => {
+        return new Promise(async (resolve, reject) => {
+            //console.log('order');
+            //console.log(order, produts, total)
+            //using condition operator, status is placed or pending
+            let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+            let orderObj = {
+                deliveryDetailes: {
+                    name: order.userName,
+                    mobile: order.mobile,
+                    address: order.address,
+                    pincode: order.pincode,
+                    date: new Date
+                },
+                userId: new objectId(order.userId),
+                paymentMethod: order['payment-method'],
+                products: products,
+                total: total,
+                status: status
+            }
+            await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).insertOne(orderObj).then((respone) => {
+                //clearing cart
+                client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).deleteOne({ user: order.userId })
+                resolve()
+            })
+        })
+    },
+    getCartProductsList: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let cart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
+            resolve(cart.products)
+        })
+    },
+    getUserOrders: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            //console.log(userId);
+            let orders = await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).find(
+                { userId: new objectId(userId) }
+            ).toArray()
+            //console.log(orders);
+            resolve(orders)
+        })
+    },
+    getOrderProducts: (orderId) => {
+        return new Promise(async (resolve, reject) => {
+            let orderItems = await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).aggregate([
                 {
                     //selecting the cart
-                    $match: { user: userId }
+                    $match: { _id: new objectId(orderId) }
                 },
                 {
                     //create multiple obj for different product ids
@@ -265,50 +361,9 @@ module.exports = {
                         quantity: 1,
                         product: { $arrayElemAt: ['$product', 0] }
                     }
-                },
-                {
-                    $group: {
-                        _id: null,
-                        total: { $sum: { $multiply: ['$quantity', '$product.price'] } }
-                    }
                 }
             ]).toArray()
-            //console.log('cart items');
-            //console.log(total[0].total);
-            resolve(total[0].total)
-        })
-    },
-    //palce order
-    placeOrder: (order, produts, total) => {
-        return new Promise(async (resolve, reject) => {
-            console.log('order');
-            console.log(order, produts, total)
-            //using condition operator, status is placed or pending
-            let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
-            let orderObj = {
-                deliveryDetailes: {
-                    name: order.userName,
-                    mobile: order.mobile,
-                    address: order.address,
-                    pincode: order.pincode,
-                },
-                userId: new objectId(order.userId),
-                paymentMethod: order['payment-method'],
-                produts: produts,
-                total: total,
-                status: status
-            }
-            await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).insertOne(orderObj).then((respone) => {
-                //clearing cart
-                client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).deleteOne({ user: order.userId })
-                resolve()
-            })
-        })
-    },
-    getCartProductsList: (userId) => {
-        return new Promise(async (resolve, reject) => {
-            let cart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
-            resolve(cart.products)
+            resolve(orderItems)
         })
     }
 }

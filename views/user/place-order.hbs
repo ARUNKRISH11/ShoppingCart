@@ -52,7 +52,10 @@
             data: $('#checkout-form').serialize(),
             //serialize: to get all data in form
             success: (response) => {
-                alert('Thank you for you order')
+                if (response.status) {
+                    location.href = 'order-placed',
+                        method = 'get'
+                }
             }
 
         })

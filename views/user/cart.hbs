@@ -50,10 +50,12 @@
         </div>
     </div>
     <div class="float-end">
+        {{#if total}}
         <h4 class="float-start">Total: <span id="total">{{total}}</span> Rs/-</h4>
         <a href="/place-order" class="col-8 btn btn-success mt-3">
             Place order
         </a>
+        {{/if}}
     </div>
 
 </section>
