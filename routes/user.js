@@ -103,7 +103,7 @@ router.get('/add-to-cart/:id', (req, res, next) => {
   })
 })
 router.post('/change-quantity/', verifyLogin, (req, res, next) => {
-  console.log('change quantity');
+  //console.log('change quantity');
   userHelpers.changeQuantity(req.body).then(async (response) => {
     userId = req.session.user._id
     //here you used response.total because response already have object response.status=true
@@ -126,5 +126,13 @@ router.get('/place-order', verifyLogin, async (req, res, next) => {
   let total = await userHelpers.getTotalAmount(userId)
   res.render('user/place-order', { user, total })
 })
-
+router.post('/place-order', async (req, res, next) => {
+  console.log('place order');
+  let products = await userHelpers.getCartProductsList(req.body.userId)
+  let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
+  //console.log(req.body,products,totalPrice);
+  userHelpers.placeOrder(req.body, products, totalPrice).then((response) => {
+    res.json({ status: true })
+  })
+})
 module.exports = router;

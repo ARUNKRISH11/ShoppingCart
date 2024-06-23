@@ -277,5 +277,36 @@ module.exports = {
             //console.log(total[0].total);
             resolve(total[0].total)
         })
+    },
+    //palce order
+    placeOrder: (order, produts, total) => {
+        return new Promise(async (resolve, reject) => {
+            console.log('order');
+            console.log(order, produts, total)
+            //using condition operator, status is placed or pending
+            let status = order['payment-method'] === 'COD' ? 'placed' : 'pending'
+            let orderObj = {
+                deliveryDetailes: {
+                    mobile: order.mobile,
+                    address: order.address,
+                    pincode: order.pincode,
+                },
+                userId: new objectId(order.userId),
+                paymentMethod: order['payment-method'],
+                produts: produts,
+                total: total,
+                status: status
+            }
+            await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).insertOne(orderObj).then((respone) => {
+                resolve()
+            })
+
+        })
+    },
+    getCartProductsList: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            let cart = await client.db(dataBase.DBNAME).collection(dataBase.CART_COLLECTION).findOne({ user: userId })
+            resolve(cart.products)
+        })
     }
 }
