@@ -5,7 +5,7 @@ const adminHelpers = require('../helpers/admin-helpers');
 const userHelpers = require('../helpers/user-helpers')
 //user loggedin 
 const verifyLogin = (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.session.userLoggedIn) {
     user = req.session.user
     next()
   } else {
@@ -35,11 +35,11 @@ router.get('/', async function (req, res, next) {
   }
 });
 router.get('/login', (req, res, next) => {
-  if (req.session.loggedIn) {
+  if (req.session.userLoggedIn) {
     res.redirect('/')
   } else {
-    res.render("user/login", { 'LoginError': req.session.loginError })
-    req.session.loginError = false
+    res.render("user/login", { 'LoginError': req.session.userLoginError })
+    req.session.userLoginError = false
   }
 })
 router.post('/user/login', (req, res, next) => {
@@ -47,38 +47,39 @@ router.post('/user/login', (req, res, next) => {
     //console.log(response.staus)
     if (response.status) {
       //user loggedin session
-      req.session.loggedIn = true
+      req.session.userLoggedIn = true
       req.session.user = response.user
       //the page already mentioned above. So there using redirect
       res.redirect('/')
     } else {
       //user not found message
-      req.session.loginError = 'Check your email address or password once again!'
+      req.session.userLoginError = 'Check your email address or password once again!'
       res.redirect('/login')
     }
   })
 })
 router.get('/signup', (req, res, next) => {
-  console.log(req.session.loggedIn)
-  if (req.session.loggedIn) {
+  //console.log(req.session.userLoggedIn)
+  if (req.session.userLoggedIn) {
     res.redirect('/')
   } else {
     res.render("user/signup")
-    req.session.loggedIn = false
+    req.session.userLoggedIn = false
   }
 })
 router.post('/user/signup', (req, res, next) => {
   userHelpers.doSignup(req.body).then((response) => {
     //console.log('response error')
     //console.log(response)
-    req.session.loggedIn = true
+    req.session.userLoggedIn = true
     req.session.user = response.user
     res.redirect('/')
   })
 })
 router.get('/logout', (req, res, next) => {
   //clearing the session
-  req.session.destroy()
+  // req.session.destroy()
+  req.session.user=null
   res.render('user/logout')
 })
 router.get('/cart', verifyLogin, async (req, res, next) => {
