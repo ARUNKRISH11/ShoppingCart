@@ -1,6 +1,7 @@
 //Product related functions
 
 //var db=require('../config/connection')
+const { log } = require('handlebars');
 var dataBase = require('../config/db-connect')
 //accessing object id for deletion of the product
 var objectId = require('mongodb').ObjectId
@@ -81,6 +82,65 @@ module.exports = {
                 resolve()
             })
             //console.log('function end')
+        })
+    },
+    //get all users
+    getAllUsers: () => {
+        return new Promise((resolve, reject) => {
+            users = client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).find().toArray()
+            console.log(users);
+            resolve(users)
+        })
+    },
+    //get orders of particular user
+    getUserOrders: (userId) => {
+        return new Promise(async (resolve, reject) => {
+            //console.log(userId);
+            let orders = await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).find(
+                { userId: new objectId(userId) }
+            ).toArray()
+            //console.log(orders);
+            resolve(orders)
+        })
+    },
+    //ger products of certain order
+    getOrderProducts: (orderId) => {
+        return new Promise(async (resolve, reject) => {
+            let orderItems = await client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).aggregate([
+                {
+                    //selecting the cart
+                    $match: { _id: new objectId(orderId) }
+                },
+                {
+                    //create multiple obj for different product ids
+                    $unwind: '$products'
+                },
+                {
+                    //selecting item and quantity from DB Cart and assign to variables
+                    $project: {
+                        item: '$products.item',
+                        quantity: '$products.quantity'
+                    }
+                },
+                {
+                    $lookup: {
+                        //matching products id with products from DB
+                        from: dataBase.PRODUCT_COLLECTION,
+                        localField: 'item',
+                        foreignField: '_id',
+                        as: 'product'
+                    }
+                },
+                {
+                    $project: {
+                        //whichone want to project from cart to product array
+                        item: 1,
+                        quantity: 1,
+                        product: { $arrayElemAt: ['$product', 0] }
+                    }
+                }
+            ]).toArray()
+            resolve(orderItems)
         })
     }
 

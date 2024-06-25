@@ -1,7 +1,7 @@
 var express = require('express');
 var router = express.Router();
 //accessing product helprs
-const productHelpers = require('../helpers/product-helpers');
+const adminHelpers = require('../helpers/admin-helpers');
 const userHelpers = require('../helpers/user-helpers')
 //user loggedin 
 const verifyLogin = (req, res, next) => {
@@ -24,12 +24,12 @@ router.get('/', async function (req, res, next) {
     //console.log('cart count')
     //console.log(cartCount)
     //accessing product detailes from DB
-    productHelpers.getAllProducts().then((products) => {
+    adminHelpers.getAllProducts().then((products) => {
       //console.log('session', user)
       res.render("user/view-products", { products, cartCount, user, footer })
     })
   } else {
-    productHelpers.getAllProducts().then((products) => {
+    adminHelpers.getAllProducts().then((products) => {
       res.render("user/view-products", { products, footer })
     })
   }
