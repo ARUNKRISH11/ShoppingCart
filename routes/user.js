@@ -11,6 +11,7 @@ const verifyLogin = (req, res, next) => {
     res.redirect('/login')
   }
 }
+let footer = true
 
 /* GET home page. */
 router.get('/', async function (req, res, next) {
@@ -24,11 +25,11 @@ router.get('/', async function (req, res, next) {
     //accessing product detailes from DB
     productHelpers.getAllProducts().then((products) => {
       //console.log('session', user)
-      res.render("user/view-products", { products, cartCount, user })
+      res.render("user/view-products", { products, cartCount, user, footer })
     })
   } else {
     productHelpers.getAllProducts().then((products) => {
-      res.render("user/view-products", { products })
+      res.render("user/view-products", { products, footer })
     })
   }
 });
@@ -182,6 +183,9 @@ router.post('/verify-payment', (req, res, next) => {
     console.log(err);
     res.json({ status: false, errMst: '' })
   })
-
+})
+router.get('/about', (req, res, next) => {
+  console.log('about');
+  res.render('user/about', { footer })
 })
 module.exports = router;

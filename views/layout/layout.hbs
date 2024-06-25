@@ -14,7 +14,10 @@
 
     <!-- Razorpay Handlbar Function (JS) Checkout Code -->
     <script src="https://checkout.razorpay.com/v1/checkout.js"></script>
-    
+
+    {{!-- Fonts script file --}}
+    <script src="https://kit.fontawesome.com/e2a8cbc556.js" crossorigin="anonymous"></script>
+
     <title>StoreBuddy</title>
 </head>
 
@@ -51,6 +54,55 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
     -->
     <script src="/javascripts/script.js"></script>
+
 </body>
+{{#if footer}}
+<footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+    <div class="col ms-5 me-5">
+        <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+            <h4>StoreBuddy</h4>
+        </a>
+        <p class="text-muted">© 2022</p>
+        <ul class="list-unstyled d-flex mt-3">
+            <a href=""><i class="fa-brands fa-facebook me-3" style="color: #00a372;"></i></i></a>
+            <a href=""><i class="fa-brands fa-instagram me-3" style="color: #00a372;"></i></a>
+            <a href=""><i class="fa-brands fa-x-twitter me-3" style="color: #00a372;"></i></a>
+        </ul>
+    </div>
+
+    <div class="col">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+        </ul>
+    </div>
+
+    <div class="col">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+        </ul>
+    </div>
+
+    <div class="col">
+        <h5>Section</h5>
+        <ul class="nav flex-column">
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+            <li class="nav-item"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+        </ul>
+    </div>
+</footer>
+{{/if}}
 
 </html>
