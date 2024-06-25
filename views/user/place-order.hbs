@@ -7,15 +7,15 @@
                     <h3>Enter Delivery Details </h3>
                     <div class="mb-3">
                         <label for="" class="form-label">Address</label>
-                        <input name="address" type="text" class="form-control">
+                        <input name="address" type="text" class="form-control" value="Kerala">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Pincode</label>
-                        <input name="pincode" type="number" class="form-control">
+                        <input name="pincode" type="number" class="form-control" value="123456">
                     </div>
                     <div class="mb-3">
                         <label for="" class="form-label">Mobile Number</label>
-                        <input name="mobile" type="number" class="form-control">
+                        <input name="mobile" type="number" class="form-control" value="1234567890">
                         <input type="text" name="userName" value="{{user.name}}" hidden>
                         <input type="text" name="userId" value="{{user._id}}" hidden>
                     </div>
@@ -52,14 +52,70 @@
             data: $('#checkout-form').serialize(),
             //serialize: to get all data in form
             success: (response) => {
-                if (response.status) {
-                    location.href = 'order-placed',
+                if (response.codSuccess) {
+                    location.href = 'order-success',
                         method = 'get'
+                } else {
+                    razorpayPayment(response)
                 }
             }
 
         })
     })
+
+    /* 
+    Check RazorPay document for more detailes and payment integration
+    URL: https://razorpay.com/docs/payments/server-integration/nodejs/payment-gateway/build-integration/#13-create-an-order-in-server
+    */
+
+    function razorpayPayment(order) {
+        // insert original keyId
+        var options = {
+            "key": "rzp_test_IvGWMBpENteAE2", // Enter the Key ID generated from the Dashboard
+            "amount": order.amount, // Amount is in currency subunits. Default currency is INR. Hence, 50000 refers to 50000 paise
+            "currency": "INR",
+            "name": "StoreBuddy",
+            "description": "Test Transaction",
+            "image": "https://example.com/your_logo",
+            "order_id": order.id, //This is a sample Order ID. Pass the `id` obtained in the response of Step 1
+            "handler": function (response) {
+
+                verifyPayment(response, order)
+            },
+            "prefill": {
+                "name": "Gaurav Kumar",
+                "email": "gaurav.kumar@example.com",
+                "contact": "9000090000"
+            },
+            "notes": {
+                "address": "Razorpay Corporate Office"
+            },
+            "theme": {
+                "color": "#3399cc"
+            }
+        };
+        var rzp1 = new Razorpay(options);
+        rzp1.open();
+    }
+    function verifyPayment(payment, order) {
+        $.ajax({
+            url: '/verify-payment',
+            method: 'post',
+            data: {
+                payment,
+                order
+            },
+            success: (response) => {
+                if (response.status) {
+                    location.href = 'order-success',
+                        method = 'get'
+                } else {
+                    location.href = 'order-failed',
+                        method = 'get'
+                }
+            }
+        })
+    }
 </script>
 <style>
     .checkout {
