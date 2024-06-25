@@ -6,6 +6,7 @@ const userHelpers = require('../helpers/user-helpers')
 //user loggedin 
 const verifyLogin = (req, res, next) => {
   if (req.session.loggedIn) {
+    user = req.session.user
     next()
   } else {
     res.redirect('/login')
@@ -81,7 +82,6 @@ router.get('/logout', (req, res, next) => {
   res.render('user/logout')
 })
 router.get('/cart', verifyLogin, async (req, res, next) => {
-  user = req.session.user
   userId = req.session.user._id
   //this products required because loading cart items
   let products = await userHelpers.getCartProducts(userId)
@@ -96,7 +96,6 @@ router.get('/add-to-cart/:id', verifyLogin, (req, res, next) => {
   //accessing user id and product id
   productId = req.params.id
   userId = req.session.user._id
-  user = req.session.user
   //console.log('id error')
   //console.log(productId, userId)
   userHelpers.addToCart(productId, userId, user).then(() => {
@@ -124,7 +123,6 @@ router.post('/remove-product/', verifyLogin, (req, res, next) => {
 })
 router.get('/place-order', verifyLogin, async (req, res, next) => {
   //console.log('place order get');
-  user = req.session.user
   userId = user._id
   //user each quntity multiple price
   let total = await userHelpers.getTotalAmount(userId)
@@ -149,11 +147,9 @@ router.post('/place-order', verifyLogin, async (req, res, next) => {
   })
 })
 router.get('/order-success', verifyLogin, (req, res, next) => {
-  user = req.session.user
   res.render('user/order-success', { user })
 })
 router.get('/order-failed', verifyLogin, (req, res, next) => {
-  user = req.session.user
   res.render('user/order-failed', { user })
 })
 router.get('/order-detailes', verifyLogin, async (req, res, next) => {
@@ -164,7 +160,6 @@ router.get('/order-detailes', verifyLogin, async (req, res, next) => {
   res.render('user/order-detailes', { user, orders })
 })
 router.get('/view-order-products/:id', verifyLogin, async (req, res, next) => {
-  user = req.session.user
   orderId = req.params.id
   products = await userHelpers.getOrderProducts(orderId)
   //console.log('products');
@@ -184,8 +179,8 @@ router.post('/verify-payment', (req, res, next) => {
     res.json({ status: false, errMst: '' })
   })
 })
-router.get('/about', (req, res, next) => {
+router.get('/about', verifyLogin, (req, res, next) => {
   console.log('about');
-  res.render('user/about', { footer })
+  res.render('user/about', { user, footer })
 })
 module.exports = router;
