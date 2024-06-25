@@ -5,6 +5,8 @@ const { log } = require('handlebars');
 var dataBase = require('../config/db-connect')
 //accessing object id for deletion of the product
 var objectId = require('mongodb').ObjectId
+const bcrypt = require('bcrypt'); //npm i bcrypt
+
 
 const { MongoClient, ServerApiVersion } = require("mongodb");
 const uri = 'mongodb://0.0.0.0:27017/'
@@ -141,6 +143,46 @@ module.exports = {
                 }
             ]).toArray()
             resolve(orderItems)
+        })
+    },
+    doLoginAdmin: (adminData) => {
+        return new Promise(async (resolve, reject) => {
+            let loginStatus = false
+            let response = {}
+            //matching email
+            let admin = await client.db(dataBase.DBNAME).collection(dataBase.ADMIN_COLLECTION).findOne({ email: adminData.email })
+            if (admin) {
+                //matching password 
+                bcrypt.compare(adminData.password, admin.password).then((status) => {
+                    if (status) {
+                        console.log("Login success")
+                        response.admin = admin
+                        response.status = true
+                        resolve(response)
+                    } else {
+                        console.log("Login failed. Check your password!")
+                        resolve({ status: false })
+                    }
+                })
+            } else {
+                console.log("Login failed. User not found!")
+                resolve({ status: false })
+            }
+        })
+    },
+    doSignupAdmin: (adminData) => {
+        let response = {}
+        return new Promise(async (resolve, reject) => {
+            //callback or await: for execution of one line of code then other
+            adminData.password = await bcrypt.hash(adminData.password, 10)
+            await client.db(dataBase.DBNAME).collection(dataBase.ADMIN_COLLECTION).insertOne(adminData).then((data) => {
+                return new Promise(async (resolve, reject) => {
+                    let admin = await client.db(dataBase.DBNAME).collection(dataBase.ADMIN_COLLECTION).findOne({ email: adminData.email })
+                    response.admin = admin
+                    resolve(response)
+                })
+            })
+            resolve(response)
         })
     }
 

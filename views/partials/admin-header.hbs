@@ -23,6 +23,25 @@
                         <a class="nav-link active" aria-current="page" href="#">Enquiries</a>
                     </li>
                 </ul>
+                <div class="dropdown">
+                    <button class="btn btn-success dropdown-toggle" type="button" id="dropdownMenuButton1"
+                        data-bs-toggle="dropdown" aria-expanded="false">
+                        {{#if admin}}
+                        {{admin.name}}
+                        {{else}}
+                        Account
+                        {{/if}}
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li>
+                            {{#if admin}}
+                            <a class="dropdown-item" href="/admin-logout">Logout</a>
+                            {{else}}
+                            <a class="dropdown-item" href="/admin-login">Login</a>
+                            {{/if}}
+                        </li>
+                    </ul>
+                </div>
             </div>
         </div>
     </nav>

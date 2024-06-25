@@ -3,20 +3,64 @@ const fileupload = require('fileupload');
 var router = express.Router();
 //accessing product helprs
 var adminHelpers = require('../helpers/admin-helpers');
-// var userHelpers= require('../helpers/user-helpers')
-
+const verifyAdminLogin = (req, res, next) => {
+  //console.log(req.session.adminLoggedIn);
+  if (req.session.adminLoggedIn) {
+    admin = req.session.admin
+    next()
+  } else {
+    res.redirect('admin/admin-login')
+  }
+}
 /* Admin Centre */
 router.get('/', (req, res) => {
-  //accessing product detailes from DB
-  adminHelpers.getAllProducts().then((products) => {
-    //console.log(products)
-    res.render("admin/view-products", { products, admin: true })
-
-  })
-
+  let admin = req.session.admin
+  // console.log('home', req.session.adminLoggedIn);
+  if (admin) {
+    //accessing product detailes from DB
+    adminHelpers.getAllProducts().then((products) => {
+      //console.log(products)
+      res.render("admin/view-products", { products, admin, adminHeader: true })
+    })
+  } else {
+    res.redirect('admin/admin-login')
+  }
 });
-router.get('/add-product', (req, res, next) => {
-  res.render("admin/add-product", { admin: true })
+// super admin section to add admins
+router.get('/super-admin', (req, res, next) => {
+  res.render('admin/super-admin', { adminHeader: true })
+})
+router.post('/admin/super-admin', (req, res, next) => {
+  adminHelpers.doSignupAdmin(req.body).then(() => {
+    res.redirect('/admin/super-admin')
+  })
+})
+router.get('/admin-login', (req, res, next) => {
+  //console.log('admin login');
+  if (req.session.adminLoggedIn) {
+    res.redirect('/')
+  } else {
+    admin = false
+    res.render('admin/login', { adminHeader: true, admin, 'LoginError': req.session.adminLoginError })
+    req.session.adminLoggedIn = false
+  }
+})
+router.post('/admin/login', (req, res, next) => {
+  adminHelpers.doLoginAdmin(req.body).then((respone) => {
+    if (respone.status) {
+      req.session.adminLoggedIn = true
+      req.session.admin = respone.admin
+      // console.log('login', req.session.adminLoggedIn);
+      res.redirect('/admin')
+    } else {
+      req.session.adminLoginError = ' Check your email address or password once again!'
+      res.redirect('/admin-login')
+    }
+  })
+})
+router.get('/add-product', verifyAdminLogin, (req, res, next) => {
+  // console.log('add product', req.session.adminLoggedIn);
+  res.render("admin/add-product", { admin, adminHeader: true })
   //console.log("get product")
 })
 router.post('/add-product', (req, res, next) => {
@@ -31,7 +75,7 @@ router.post('/add-product', (req, res, next) => {
     Image.mv('./public/product-images/' + id + '.jpg', (err) => {
       if (!err) {
         //render page or send message
-        res.render('admin/add-product', { admin: true })
+        res.render('admin/add-product', { adminHeader: true })
       } else {
         console.log("Image saving error", err)
       }
@@ -50,7 +94,7 @@ router.get('/delete-product/:id', (req, res, next) => {
 router.get('/edit-product/:id', async (req, res, next) => {
   let product = await adminHelpers.getProductDetailes(req.params.id)
   //console.log(product)
-  res.render('admin/edit-product', { product, admin: true })
+  res.render('admin/edit-product', { product, adminHeader: true })
 
 })
 router.post('/edit-product/:id', (req, res, next) => {
@@ -73,13 +117,13 @@ router.post('/edit-product/:id', (req, res, next) => {
 })
 router.get('/users', async (req, res, next) => {
   users = await adminHelpers.getAllUsers()
-  res.render('admin/user-view', { users, admin: true })
+  res.render('admin/user-view', { users, adminHeader: true })
 })
 router.get('/user-order-detailes/:id', async (req, res, next) => {
   userId = req.params.id
   orders = await adminHelpers.getUserOrders(userId)
   console.log(userId);
-  res.render('admin/order-detailes', { orders, admin: true })
+  res.render('admin/order-detailes', { orders, adminHeader: true })
 })
 router.get('/user-order-products/:id', async (req, res, next) => {
   console.log('view order products');
@@ -87,6 +131,6 @@ router.get('/user-order-products/:id', async (req, res, next) => {
   products = await adminHelpers.getOrderProducts(orderId)
   console.log(orderId);
   console.log(products);
-  res.render('admin/order-products', { products, admin: true })
+  res.render('admin/order-products', { products, adminHeader: true })
 })
 module.exports = router;
