@@ -2,6 +2,7 @@
 <section>
     <div class="container">
         <table class="table mt-4">
+            {{#if orders}}
             <thead>
                 <tr>
                     <th scope="col">Number</th>
@@ -14,6 +15,9 @@
                     <th scope="col">Status</th>
                 </tr>
             </thead>
+            {{else}}
+                    <h4 class="text-center mt-4">Order is empty!</h4><br>
+            {{/if}}
             <tbody>
                 {{#each orders}}
                 <tr>

@@ -79,7 +79,8 @@ router.post('/user/signup', (req, res, next) => {
 router.get('/logout', (req, res, next) => {
   //clearing the session
   // req.session.destroy()
-  req.session.user=null
+  req.session.user = null
+  req.session.userLoggedIn = false
   res.render('user/logout')
 })
 router.get('/cart', verifyLogin, async (req, res, next) => {
