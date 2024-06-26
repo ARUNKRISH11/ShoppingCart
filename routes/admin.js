@@ -9,7 +9,7 @@ const verifyAdminLogin = (req, res, next) => {
     admin = req.session.admin
     next()
   } else {
-    res.redirect('admin/admin-login')
+    res.redirect('/admin/admin-login')
   }
 }
 /* Admin Centre */
@@ -36,9 +36,9 @@ router.post('/admin/super-admin', (req, res, next) => {
   })
 })
 router.get('/admin-login', (req, res, next) => {
-  //console.log('admin login');
+  // console.log(req.session.adminLoggedIn);
   if (req.session.adminLoggedIn) {
-    res.redirect('/')
+    res.redirect('/admin')
   } else {
     admin = false
     res.render('admin/login', { adminHeader: true, admin, 'LoginError': req.session.adminLoginError })
@@ -54,7 +54,7 @@ router.post('/admin/login', (req, res, next) => {
       res.redirect('/admin')
     } else {
       req.session.adminLoginError = ' Check your email address or password once again!'
-      res.redirect('/admin-login')
+      res.redirect('/admin/admin-login')
     }
   })
 })
@@ -82,7 +82,7 @@ router.post('/add-product', (req, res, next) => {
     })
   })
 })
-router.get('/delete-product/:id', (req, res, next) => {
+router.get('/delete-product/:id', verifyAdminLogin, (req, res, next) => {
   //for getting product id through paramas
   let productId = req.params.id
   //console.log('admin', proId)
@@ -91,7 +91,7 @@ router.get('/delete-product/:id', (req, res, next) => {
     res.redirect('/admin')
   })
 })
-router.get('/edit-product/:id', async (req, res, next) => {
+router.get('/edit-product/:id', verifyAdminLogin, async (req, res, next) => {
   let product = await adminHelpers.getProductDetailes(req.params.id)
   //console.log(product)
   res.render('admin/edit-product', { product, adminHeader: true })
@@ -115,22 +115,27 @@ router.post('/edit-product/:id', (req, res, next) => {
     }
   })
 })
-router.get('/users', async (req, res, next) => {
+router.get('/users', verifyAdminLogin, async (req, res, next) => {
   users = await adminHelpers.getAllUsers()
-  res.render('admin/user-view', { users, adminHeader: true })
+  res.render('admin/user-view', { users, admin, adminHeader: true })
 })
-router.get('/user-order-detailes/:id', async (req, res, next) => {
+router.get('/user-order-detailes/:id', verifyAdminLogin, async (req, res, next) => {
   userId = req.params.id
   orders = await adminHelpers.getUserOrders(userId)
   console.log(userId);
-  res.render('admin/order-detailes', { orders, adminHeader: true })
+  console.log(orders);
+  res.render('admin/order-detailes', { orders, admin, adminHeader: true })
 })
-router.get('/user-order-products/:id', async (req, res, next) => {
+router.get('/user-order-products/:id', verifyAdminLogin, async (req, res, next) => {
   console.log('view order products');
   orderId = req.params.id
   products = await adminHelpers.getOrderProducts(orderId)
   console.log(orderId);
   console.log(products);
-  res.render('admin/order-products', { products, adminHeader: true })
+  res.render('admin/order-products', { products, admin, adminHeader: true })
+})
+router.get('/admin-logout', (req, res, next) => {
+  req.session.adminLoggedIn = false
+  res.render('admin/logout', { adminHeader: true })
 })
 module.exports = router;
