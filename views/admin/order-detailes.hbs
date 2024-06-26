@@ -1,7 +1,7 @@
 <!-- Admin Products view -->
 <section>
     <div class="container">
-        <table class="table mt-4">
+        <table class="table mt-4" id="userOrderTable">
             {{#if orders}}
             <h3 class="mt-3 mb-4 text-center">User Orders</h3>
             <thead>
@@ -14,6 +14,7 @@
                     <th scope="col">Amount</th>
                     <th scope="col">Payment</th>
                     <th scope="col">Status</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             {{else}}
@@ -37,3 +38,8 @@
         </table>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        $('#userOrderTable').DataTable();
+    });
+</script>

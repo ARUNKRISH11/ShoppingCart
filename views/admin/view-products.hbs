@@ -4,7 +4,7 @@
         <div class="row mt-4">
             <a href="/admin/add-product" class="btn btn-success " style="width: 25%; margin-left: auto">Add Product</a>
         </div>
-        <table class="table mt-4">
+        <table class="table mt-4" id="productsTable">
             <thead>
                 <tr>
                     <th scope="col">Number</th>
@@ -14,7 +14,7 @@
                     <th scope="col">Price</th>
                     <th scope="col">Image</th>
                     <th scope="col">Action</th>
-                    <th scope="col">Buttons</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -35,3 +35,8 @@
         </table>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        $('#productsTable').DataTable();
+    });
+</script>

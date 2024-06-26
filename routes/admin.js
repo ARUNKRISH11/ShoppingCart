@@ -15,7 +15,7 @@ const verifyAdminLogin = (req, res, next) => {
 /* Admin Centre */
 router.get('/', (req, res) => {
   let admin = req.session.admin
-  // console.log('home', req.session.adminLoggedIn);
+  ////console.log('home', req.session.adminLoggedIn);
   if (admin) {
     //accessing product detailes from DB
     adminHelpers.getAllProducts().then((products) => {
@@ -36,7 +36,7 @@ router.post('/admin/super-admin', (req, res, next) => {
   })
 })
 router.get('/admin-login', (req, res, next) => {
-  // console.log(req.session.adminLoggedIn);
+  ////console.log(req.session.adminLoggedIn);
   if (req.session.adminLoggedIn) {
     res.redirect('/admin')
   } else {
@@ -50,7 +50,7 @@ router.post('/admin/login', (req, res, next) => {
     if (respone.status) {
       req.session.adminLoggedIn = true
       req.session.admin = respone.admin
-      // console.log('login', req.session.adminLoggedIn);
+      ////console.log('login', req.session.adminLoggedIn);
       res.redirect('/admin')
     } else {
       req.session.adminLoginError = ' Check your email address or password once again!'
@@ -59,7 +59,7 @@ router.post('/admin/login', (req, res, next) => {
   })
 })
 router.get('/add-product', verifyAdminLogin, (req, res, next) => {
-  // console.log('add product', req.session.adminLoggedIn);
+  ////console.log('add product', req.session.adminLoggedIn);
   res.render("admin/add-product", { admin, adminHeader: true })
   //console.log("get product")
 })
@@ -77,7 +77,7 @@ router.post('/add-product', (req, res, next) => {
         //render page or send message
         res.render('admin/add-product', { adminHeader: true })
       } else {
-        console.log("Image saving error", err)
+       //console.log("Image saving error", err)
       }
     })
   })
@@ -111,7 +111,7 @@ router.post('/edit-product/:id', (req, res, next) => {
     if (Image) {
       Image.mv('./public/product-images/' + id + '.jpg')
     } else {
-      console.log('Image edie error')
+     //console.log('Image edie error')
     }
   })
 })
@@ -122,8 +122,8 @@ router.get('/users', verifyAdminLogin, async (req, res, next) => {
 router.get('/user-order-detailes/:id', verifyAdminLogin, async (req, res, next) => {
   userId = req.params.id
   orders = await adminHelpers.getUserOrders(userId)
-  console.log(userId);
-  console.log(orders);
+ //console.log(userId);
+ //console.log(orders);
   if (orders) {
     res.render('admin/order-detailes', { orders, admin, adminHeader: true })
   } else {
@@ -133,11 +133,11 @@ router.get('/user-order-detailes/:id', verifyAdminLogin, async (req, res, next) 
   res.render('admin/order-detailes', { orders, admin, adminHeader: true })
 })
 router.get('/user-order-products/:id', verifyAdminLogin, async (req, res, next) => {
-  console.log('view order products');
+ //console.log('view order products');
   orderId = req.params.id
   products = await adminHelpers.getOrderProducts(orderId)
-  console.log(orderId);
-  console.log(products);
+ //console.log(orderId);
+ //console.log(products);
   res.render('admin/order-products', { products, admin, adminHeader: true })
 })
 router.get('/admin-logout', (req, res, next) => {

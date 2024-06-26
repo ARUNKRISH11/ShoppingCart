@@ -1,13 +1,14 @@
 <!-- Admin Products view -->
 <section>
     <div class="container">
-        <table class="table mt-4">
+        <table class="table mt-4" id="usersTable">
+            <h3 class="mt-3 mb-4  text-center">Total Users</h3>
             <thead>
                 <tr>
                     <th scope="col">Number</th>
                     <th scope="col">Name</th>
                     <th scope="col">Email</th>
-                    <th scope="col">Button</th>
+                    <th scope="col">Actions</th>
                 </tr>
             </thead>
             <tbody>
@@ -23,3 +24,8 @@
         </table>
     </div>
 </section>
+<script>
+    $(document).ready(function () {
+        $('#usersTable').DataTable();
+    });
+</script>
