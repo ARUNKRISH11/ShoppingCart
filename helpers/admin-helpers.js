@@ -52,7 +52,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             await client.db(dataBase.DBNAME).collection(dataBase.PRODUCT_COLLECTION).deleteOne({ _id: new objectId(productId) }).then((response) => {
                 //gathering the informations about deleted item
-                console.log(response);
+                //console.log(response);
                 resolve(response)
             })
         })
@@ -90,7 +90,7 @@ module.exports = {
     getAllUsers: () => {
         return new Promise((resolve, reject) => {
             users = client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).find().toArray()
-            console.log(users);
+            //console.log(users);
             resolve(users)
         })
     },
@@ -155,17 +155,17 @@ module.exports = {
                 //matching password 
                 bcrypt.compare(adminData.password, admin.password).then((status) => {
                     if (status) {
-                        console.log("Login success")
+                        //console.log("Login success")
                         response.admin = admin
                         response.status = true
                         resolve(response)
                     } else {
-                        console.log("Login failed. Check your password!")
+                        //console.log("Login failed. Check your password!")
                         resolve({ status: false })
                     }
                 })
             } else {
-                console.log("Login failed. User not found!")
+                //console.log("Login failed. User not found!")
                 resolve({ status: false })
             }
         })
@@ -183,6 +183,12 @@ module.exports = {
                 })
             })
             resolve(response)
+        })
+    },
+    getAllOrders: () => {
+        return new Promise((resolve, reject) => {
+            orders = client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).find().toArray()
+            resolve(orders)
         })
     }
 

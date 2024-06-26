@@ -127,7 +127,7 @@ router.get('/user-order-detailes/:id', verifyAdminLogin, async (req, res, next) 
   if (orders) {
     res.render('admin/order-detailes', { orders, admin, adminHeader: true })
   } else {
-    orders =false
+    orders = false
     res.render('admin/order-detailes', { orders, admin, adminHeader: true })
   }
   res.render('admin/order-detailes', { orders, admin, adminHeader: true })
@@ -144,4 +144,9 @@ router.get('/admin-logout', (req, res, next) => {
   req.session.adminLoggedIn = false
   res.render('admin/logout', { adminHeader: true })
 })
+router.get('/orders', verifyAdminLogin, async (req, res, next) => {
+  allOrders = await adminHelpers.getAllOrders()
+  res.render('admin/order-view', { allOrders, admin, adminHeader: true })
+})
+
 module.exports = router;
