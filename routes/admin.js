@@ -141,6 +141,7 @@ router.get('/user-order-products/:id', verifyAdminLogin, async (req, res, next) 
   res.render('admin/order-products', { products, admin, adminHeader: true })
 })
 router.get('/admin-logout', (req, res, next) => {
+  req.session.admin=null 
   req.session.adminLoggedIn = false
   res.render('admin/logout', { adminHeader: true })
 })
