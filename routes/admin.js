@@ -124,6 +124,12 @@ router.get('/user-order-detailes/:id', verifyAdminLogin, async (req, res, next) 
   orders = await adminHelpers.getUserOrders(userId)
   console.log(userId);
   console.log(orders);
+  if (orders) {
+    res.render('admin/order-detailes', { orders, admin, adminHeader: true })
+  } else {
+    orders =false
+    res.render('admin/order-detailes', { orders, admin, adminHeader: true })
+  }
   res.render('admin/order-detailes', { orders, admin, adminHeader: true })
 })
 router.get('/user-order-products/:id', verifyAdminLogin, async (req, res, next) => {
