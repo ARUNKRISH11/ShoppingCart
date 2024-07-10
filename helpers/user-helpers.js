@@ -437,5 +437,26 @@ module.exports = {
                 resolve()
             })
         })
+    },
+    updateProfile: (userData) => {
+        let response = {}
+        return new Promise(async (resolve, reject) => {
+            await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).updateOne(
+                {
+                    email: userData.email
+                },
+                {
+                    $set: {
+                        name: userData.newName,
+                        email: userData.newEmail
+                    }
+
+                }
+            )
+            let user =await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({email:userData.newEmail})
+
+            response.user = user
+            resolve(response)
+        })
     }
 }

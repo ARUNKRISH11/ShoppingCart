@@ -182,7 +182,17 @@ router.post('/verify-payment', (req, res, next) => {
   })
 })
 router.get('/about', verifyLogin, (req, res, next) => {
-  console.log('about');
+  //console.log('about');
   res.render('user/about', { user, footer })
+})
+router.get('/profile', verifyLogin, (req, res, next) => {
+  res.render('user/profile', { user })
+})
+router.get('/profile/edit-profile', verifyLogin, (req, res, next) => {
+  res.render('user/edit-profile', { user })
+})
+router.post('/profile/edit-profile', verifyLogin, async (req, res, next) => {
+  user = await userHelpers.updateProfile(req.body)
+  res.redirect('/profile',{user})
 })
 module.exports = router;
