@@ -543,3 +543,57 @@ module.exports = {
     });
   },
 };
+            hmac.update(detailes['payment[razorpay_order_id]'] + '|' + detailes['payment[razorpay_payment_id]'])
+            hmac = hmac.digest('hex')
+            if (hmac == detailes['payment[razorpay_signature]']) {
+                resolve()
+            } else {
+                reject()
+            }
+            // const {
+            //     createHmac,
+            // } = require('node:crypto');
+            // const hmac = createHmac('sha256', 'a secret');
+            // hmac.update('some data to hash');
+            // console.log(hmac.digest('hex'));
+        })
+    },
+    //change payment status in db
+    changePaymentStatus: (orderId) => {
+        return new Promise((resolve, reject) => {
+            client.db(dataBase.DBNAME).collection(dataBase.ORDER_COLLECTION).updateOne(
+                {
+                    _id: new objectId(orderId)
+                },
+                {
+                    $set: {
+                        status: 'placed'
+                    }
+                }
+            ).then(() => {
+                resolve()
+            })
+        })
+    },
+    updateProfile: (userData) => {
+        let response = {}
+        return new Promise(async (resolve, reject) => {
+            await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).updateOne(
+                {
+                    email: userData.email
+                },
+                {
+                    $set: {
+                        name: userData.newName,
+                        email: userData.newEmail
+                    }
+
+                }
+            )
+            let user =await client.db(dataBase.DBNAME).collection(dataBase.USER_COLLECTION).findOne({email:userData.newEmail})
+
+            response.user = user
+            resolve(response)
+        })
+    }
+}

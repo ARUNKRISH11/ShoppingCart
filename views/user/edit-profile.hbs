@@ -10,6 +10,12 @@
             </div>
         </div>
         --}}
+        {{!-- <h2>User Profile</h2>
+        <div class="profile-info">
+            <div><strong>Name:</strong> {{user.name}}</div>
+            <div><strong>Email:</strong> {{user.email}}</div>
+            <div class="edit-form"> <a class="btn btn-success" type="submit">Edit Profile</a></div>
+        </div> --}}
         <div class="edit-form">
             <h3>Edit Profile</h3>
             <form action="/profile/edit-profile" method="post">
@@ -37,12 +43,19 @@
                     value="{{user.email}}"
                     hidden
                 />
+                <input type="text" id="name" name="newName" value="{{user.name}}" required>
+
+                <label for="email">Email:</label>
+                <input type="email" id="email" name="newEmail" value="{{user.email}}" required>
+
+                <input type="email" name="email" value="{{user.email}}" hidden>
                 <button type="submit">Save Changes</button>
             </form>
         </div>
     </div>
 </section>
 <style>
+
     .profile-container {
         max-width: 600px;
         background-color: white;
@@ -87,4 +100,6 @@
     .edit-form button:hover {
         background-color: #407643;
     }
+</style>
+    } 
 </style>
