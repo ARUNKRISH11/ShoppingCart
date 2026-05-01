@@ -31,7 +31,13 @@
                     <td>{{this.total}}</td>
                     <td>{{this.paymentMethod}}</td>
                     <td>{{this.status}}</td>
-                    <td><a href="/admin/user-order-products/{{this._id}}" class="btn btn-primary">View Products</a></td>
+                    <td>
+                        <a
+                            href="/admin/user-order-products/{{this._id}}"
+                            class="btn btn-primary"
+                            >View Products</a
+                        >
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -40,6 +46,6 @@
 </section>
 <script>
     $(document).ready(function () {
-        $('#userOrderTable').DataTable();
+        $("#userOrderTable").DataTable();
     });
 </script>

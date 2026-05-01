@@ -2,7 +2,7 @@
 <section>
     <div class="container">
         <table class="table mt-4" id="usersTable">
-            <h3 class="mt-3 mb-4  text-center">Total Users</h3>
+            <h3 class="mt-3 mb-4 text-center">Total Users</h3>
             <thead>
                 <tr>
                     <th scope="col">Number</th>
@@ -17,7 +17,13 @@
                     <th scope="row">1</th>
                     <td>{{this.name}}</td>
                     <td>{{this.email}}</td>
-                    <td><a href="/admin/user-order-detailes/{{this._id}}" class="btn btn-success">Order History</a></td>
+                    <td>
+                        <a
+                            href="/admin/user-order-detailes/{{this._id}}"
+                            class="btn btn-success"
+                            >Order History</a
+                        >
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
@@ -26,6 +32,6 @@
 </section>
 <script>
     $(document).ready(function () {
-        $('#usersTable').DataTable();
+        $("#usersTable").DataTable();
     });
 </script>

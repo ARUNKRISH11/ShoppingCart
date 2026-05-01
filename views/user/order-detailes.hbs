@@ -16,7 +16,8 @@
                 </tr>
             </thead>
             {{else}}
-                    <h4 class="text-center mt-4">Order is empty!</h4><br>
+            <h4 class="text-center mt-4">Order is empty!</h4>
+            <br />
             {{/if}}
             <tbody>
                 {{#each orders}}
@@ -29,7 +30,13 @@
                     <td>{{this.total}}</td>
                     <td>{{this.paymentMethod}}</td>
                     <td>{{this.status}}</td>
-                    <td><a href="/view-order-products/{{this._id}}" class="btn btn-primary">View Products</a></td>
+                    <td>
+                        <a
+                            href="/view-order-products/{{this._id}}"
+                            class="btn btn-primary"
+                            >View Products</a
+                        >
+                    </td>
                 </tr>
                 {{/each}}
             </tbody>
